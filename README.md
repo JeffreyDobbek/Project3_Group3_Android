@@ -26,6 +26,21 @@ mySQL -> Replit -> Node.js -> Express -> Android
 <img width="300" alt="Screen Shot 2022-04-10 at 8 14 37 PM" src="https://user-images.githubusercontent.com/49994182/162660973-f3a8c2df-c35d-4d62-b5c5-429f878c39b3.png">
 <img width="300" alt="Screen Shot 2022-04-10 at 8 14 49 PM" src="https://user-images.githubusercontent.com/49994182/162660979-df861867-54c3-4343-9b96-e413840614ac.png">
 
+### API Endpoints (not final)
+
+Create Account - POST [url]/register?email={email}&name={name}&password={password}<br>
+Login - POST [url]/login?email={email}&password={password}<br>
+Logout - GET [url]/logout<br>
+Delete Account - DELETE [url]/logout<br>
+Profile - GET [url]/profile?email={email}<br>
+Change Info - PUT [url]/profile?email={email}&name={name}&password={password}<br>
+Landing Page - GET [url]/home<br>
+Create Post - POST [url]/home?userId={userId}&caption={caption}<br>
+Vote on a Post - PUT [url]/home?postId={postId}&imageId={imageId}&numVotes={numVotes}<br>
+Leave Comment - POST [url]/home?postId={postId}&comment={comment}<br>
+End a Poll - PUT [url]/profile?postId={postId}<br>
+Delete Post - DELETE [url]/profile?postId={postId}<br>
+
 #### Entity Relation Diagram (not final)
 https://lucid.app/lucidchart/6c5f6941-ec01-453e-96c7-be3e5150a49d/edit?beaconFlowId=52F46FDEE0894A4E&invitationId=inv_8cfdda85-75ad-44a2-a4c5-4b49d8bdb6dc&page=0_0#
 
