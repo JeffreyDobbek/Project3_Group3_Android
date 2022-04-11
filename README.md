@@ -14,15 +14,17 @@ This is an app that helps users to make a choice. For example, it could be choos
 
 https://github.com/Youngphil5/Choices-proj3-
 
+### Tech Stack
+mySQL -> Replit -> Node.js -> Express -> Android
+
 ### Wireframe (not final)
 
-<img width="686" alt="Screen Shot 2022-04-10 at 8 13 14 PM" src="https://user-images.githubusercontent.com/49994182/162660934-b738f2a5-d3af-4847-85ca-e53e999ea8a0.png">
-<img width="679" alt="Screen Shot 2022-04-10 at 8 13 26 PM" src="https://user-images.githubusercontent.com/49994182/162660940-7d9c20f1-ce31-4522-a42d-69b683fceafd.png">
-<img width="683" alt="Screen Shot 2022-04-10 at 8 13 51 PM" src="https://user-images.githubusercontent.com/49994182/162660945-1088ae69-6175-4d90-ba41-87858292c356.png">
-<img width="681" alt="Screen Shot 2022-04-10 at 8 14 03 PM" src="https://user-images.githubusercontent.com/49994182/162660964-73f99ef1-fe8c-4635-9f61-8540e118be31.png">
-<img width="681" alt="Screen Shot 2022-04-10 at 8 14 17 PM" src="https://user-images.githubusercontent.com/49994182/162660968-1ccc529e-86e4-4bc1-a4f0-1e340bed5ba1.png">
-<img width="682" alt="Screen Shot 2022-04-10 at 8 14 37 PM" src="https://user-images.githubusercontent.com/49994182/162660973-f3a8c2df-c35d-4d62-b5c5-429f878c39b3.png">
-<img width="679" alt="Screen Shot 2022-04-10 at 8 14 49 PM" src="https://user-images.githubusercontent.com/49994182/162660979-df861867-54c3-4343-9b96-e413840614ac.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 13 14 PM" src="https://user-images.githubusercontent.com/49994182/162660934-b738f2a5-d3af-4847-85ca-e53e999ea8a0.png"> <img width="300" alt="Screen Shot 2022-04-10 at 8 13 26 PM" src="https://user-images.githubusercontent.com/49994182/162660940-7d9c20f1-ce31-4522-a42d-69b683fceafd.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 13 51 PM" src="https://user-images.githubusercontent.com/49994182/162660945-1088ae69-6175-4d90-ba41-87858292c356.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 14 03 PM" src="https://user-images.githubusercontent.com/49994182/162660964-73f99ef1-fe8c-4635-9f61-8540e118be31.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 14 17 PM" src="https://user-images.githubusercontent.com/49994182/162660968-1ccc529e-86e4-4bc1-a4f0-1e340bed5ba1.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 14 37 PM" src="https://user-images.githubusercontent.com/49994182/162660973-f3a8c2df-c35d-4d62-b5c5-429f878c39b3.png">
+<img width="300" alt="Screen Shot 2022-04-10 at 8 14 49 PM" src="https://user-images.githubusercontent.com/49994182/162660979-df861867-54c3-4343-9b96-e413840614ac.png">
 
 #### Entity Relation Diagram (not final)
 https://lucid.app/lucidchart/6c5f6941-ec01-453e-96c7-be3e5150a49d/edit?beaconFlowId=52F46FDEE0894A4E&invitationId=inv_8cfdda85-75ad-44a2-a4c5-4b49d8bdb6dc&page=0_0#
