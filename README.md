@@ -8,7 +8,7 @@
  
  ### Project Description<br>
  
-This is an app that helps users to make a choice. For example, it could be choosing the color for your room or picking food to eat. Some people are indecisive about making a choice; getting other people's votes can help them decide. This app makes decisions easy. Choice will allow users post a list of choices (as picture or text) and the app will help the user make a choice out of his posted list of choices using the result from the online poll. MVP will include account creation, post creation, viewing posts, voting on a choice using and sending post.
+This is an app that helps users to make a choice. For example, it could be choosing the color for your room or picking food to eat. Some people are indecisive about making a choice; getting other people's votes can help them decide. This app makes decisions easy. Choice will allow users post a list of choices (as picture or text) and the app will help the user make a choice out of his posted list of choices using the result from the online poll. MVP will include account creation, post creation, viewing posts, voting on a choice using likes and sending post.
 
 #### Database Structure
 
