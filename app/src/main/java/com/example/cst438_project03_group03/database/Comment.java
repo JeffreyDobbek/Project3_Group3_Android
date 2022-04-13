@@ -30,6 +30,9 @@ public class Comment {
     @Expose
     private String numLikes;
 
+    public Comment() {
+    }
+
     public Comment(int commentId, int postId, int userId, String comment, String numLikes) {
         this.commentId = commentId;
         this.postId = postId;

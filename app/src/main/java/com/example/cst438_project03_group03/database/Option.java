@@ -26,6 +26,9 @@ public class Option {
     @Expose
     private int numLikes;
 
+    public Option() {
+    }
+
     public Option(int optionId, int postId, String option, int numLikes) {
         this.optionId = optionId;
         this.postId = postId;

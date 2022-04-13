@@ -26,6 +26,9 @@ public class Image {
     @Expose
     private String numLikes;
 
+    public Image() {
+    }
+
     public Image(int imageId, int postId, String image, String numLikes) {
         this.imageId = imageId;
         this.postId = postId;

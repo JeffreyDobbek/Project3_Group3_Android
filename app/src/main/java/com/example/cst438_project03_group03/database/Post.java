@@ -33,6 +33,9 @@ public class Post {
     @Expose(serialize = false)
     private int recentPosts;
 
+    public Post() {
+    }
+
     public Post(int postId, int userId, String caption, int numLikes, int numComments) {
         this.postId = postId;
         this.userId = userId;
