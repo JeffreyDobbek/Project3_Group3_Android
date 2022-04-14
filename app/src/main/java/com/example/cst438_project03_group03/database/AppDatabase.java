@@ -37,5 +37,4 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
-    public abstract UserDao getDao();
 }
