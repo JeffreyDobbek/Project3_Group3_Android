@@ -32,7 +32,7 @@ public class User {
 
     @SerializedName("image")
     @Expose
-    private int image;
+    private String image;
 
     @Expose(serialize = false)
     private int cachedOrder;
@@ -40,7 +40,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId, String username, String email, String name, String password, int image) {
+    public User(int userId, String username, String email, String name, String password, String image) {
         this.userId = userId;
         this.email = email;
         this.username = username;
@@ -89,11 +89,11 @@ public class User {
         this.password = password;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

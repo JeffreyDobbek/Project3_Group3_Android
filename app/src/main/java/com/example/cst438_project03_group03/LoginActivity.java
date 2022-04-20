@@ -64,12 +64,15 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        AppDatabase db = AppDatabase.getInstance(LoginActivity.this);
+        userDao = db.userDao();
+        /*
         userDao = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build()
                 .userDao();
-
+        */
         users = userDao.getAllUsers();
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
