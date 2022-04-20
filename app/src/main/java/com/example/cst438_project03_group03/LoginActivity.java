@@ -118,24 +118,26 @@ public class LoginActivity extends AppCompatActivity {
     */
 
     private void login() {
+        if (mUserText.getText().toString().equals(adminUsername) && mPasswordText.getText().toString().equals(adminPassword)) {
+            Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra(EXTRA_IS_ADMIN, true);
+            intent.putExtra(EXTRA_USER_ID, -1);
+            startActivity(intent);
+            return;
+        }
         for (User u : users) {
-            if (mUserText.getText().toString().equals(adminUsername) && mPasswordText.getText().toString().equals(adminPassword)) {
-                Toast.makeText(LoginActivity.this, "Welcome Admin", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra(EXTRA_IS_ADMIN, true);
-                intent.putExtra(EXTRA_USER_ID, -1);
-                startActivity(intent);
-                return;
-            }
-            else if (mUserText.getText().toString().equals(u.getUsername()) && mPasswordText.getText().toString().equals(u.getPassword())) {
+            if (mUserText.getText().toString().equals(u.getUsername()) && mPasswordText.getText().toString().equals(u.getPassword())) {
                 Toast.makeText(LoginActivity.this, "Welcome back " + u.getUsername(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra(EXTRA_USER_ID, u.getUserId());
                 startActivity(intent);
                 return;
             }
+            else {
+                Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
+            }
         }
-        Toast.makeText(LoginActivity.this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
     }
 
     private void googleSignIn() {
