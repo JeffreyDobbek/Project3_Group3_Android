@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CST438_Project03_Group03">
         <activity
+            android:name=".ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".DeleteAccountActivity"
             android:exported="false" />
         <activity

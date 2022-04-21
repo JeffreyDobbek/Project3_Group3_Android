@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String EXTRA_IS_ADMIN = "com.example.cst438_project03_group03.EXTRA_IS_ADMIN";
     public static final String EXTRA_USER_ID = "com.example.cst438_project03_group03.EXTRA_USER_ID";
 
-    private Button mLoginButton, mCreateAccountButton;
+    private Button mLoginButton, mCreateAccountButton, mForgotPasswordButton;
     private SignInButton mGoogleSignInButton;
     private EditText mUserText, mPasswordText;
 
@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton = findViewById(R.id.buttonLogin);
         mGoogleSignInButton = findViewById(R.id.google_sign_in_button);
         mCreateAccountButton = findViewById(R.id.createAccountButton);
+        mForgotPasswordButton = findViewById(R.id.forgot_password_button);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -64,12 +65,15 @@ public class LoginActivity extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        AppDatabase db = AppDatabase.getInstance(LoginActivity.this);
+        userDao = db.userDao();
+        /*
         userDao = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .allowMainThreadQueries()
                 .build()
                 .userDao();
-
+        */
         users = userDao.getAllUsers();
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +92,14 @@ public class LoginActivity extends AppCompatActivity {
                         googleSignIn();
                         break;
                 }
+            }
+        });
+
+        mForgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPasswordActivity.class);
+                startActivity(intent);
             }
         });
 
