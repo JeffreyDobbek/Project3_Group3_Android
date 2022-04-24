@@ -22,8 +22,9 @@ import com.example.cst438_project03_group03.databinding.FragmentSecondCreateAcco
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Class:
- * Description:
+ * Class: SecondCreateAccountFragment.java
+ * Description: Part 2 of Create Account feature
+ *              User can choose their profile picture and provide a username and their real name.
  */
 public class SecondCreateAccountFragment extends Fragment {
     private static final int RESULT_LOAD_IMAGE = 1;

@@ -9,6 +9,10 @@ import androidx.room.TypeConverters;
 
 import java.util.ArrayList;
 
+/**
+ * Class: AppDatabase.java
+ * Description: Allows access to an instance of the Room database and singletons of the DAOs.
+ */
 @Database(entities = {User.class, Post.class, Option.class, Image.class, Comment.class}, version = 2, exportSchema = false)
 @TypeConverters(ArrayListConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
@@ -29,6 +33,11 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract OptionDao optionDao();
     public abstract CommentDao commentDao();
 
+    /**
+     * Builds and returns an instance of the database.
+     * @param context The application context.
+     * @return an instance.
+     */
     public static synchronized AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context, AppDatabase.class, DATABASE_NAME)

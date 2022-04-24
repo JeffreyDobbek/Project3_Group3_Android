@@ -6,6 +6,10 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Class: User.java
+ * Description: Model and entity for a User object.
+ */
 @Entity(tableName = AppDatabase.USER_TABLE)
 public class User {
 
@@ -40,6 +44,15 @@ public class User {
     public User() {
     }
 
+    /**
+     * Parameterized constructor to initialize a User object.
+     * @param userId The user's unique id.
+     * @param username The user's unique username.
+     * @param email The user's unique email.
+     * @param name The user's real name.
+     * @param password The user's password.
+     * @param image The user's profile picture (an Imgur link).
+     */
     public User(int userId, String username, String email, String name, String password, String image) {
         this.userId = userId;
         this.email = email;

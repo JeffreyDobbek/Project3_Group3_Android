@@ -1,11 +1,12 @@
 package com.example.cst438_project03_group03.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cst438_project03_group03.CreateAccountActivity;
-import com.example.cst438_project03_group03.LoginActivity;
 import com.example.cst438_project03_group03.R;
+import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstCreateAccountBinding;
+import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
+import java.util.List;
+
+/**
+ * Class: FirstCreateAccountFragment.java
+ * Description: Part 1 of Create Account feature
+ *              Asks user to enter an email and a password for their account.
+ */
 public class FirstCreateAccountFragment extends Fragment {
 
     private EditText mEmailField;
@@ -29,7 +37,11 @@ public class FirstCreateAccountFragment extends Fragment {
     private String mPassword;
     private String mConfirmPassword;
 
+    private List<User> mUsers;
+
     private Button mRegisterButton;
+
+    private UserViewModel mViewModel;
 
     private FragmentFirstCreateAccountBinding mBinding;
 
@@ -56,11 +68,24 @@ public class FirstCreateAccountFragment extends Fragment {
 
         wireUpDisplay();
 
+        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mViewModel.init();
+        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> response) {
+                if (response != null) {
+                    mUsers = response;
+                }
+            }
+        });
+
+        mViewModel.getAllUsers();
+
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (fieldsFilled()) {
-                    if (checkFields()) {
+                    if (validCredentials()) {
                         Bundle bundle = new Bundle();
                         bundle.putString("email", mEmail);
                         bundle.putString("password", mPassword);
@@ -79,6 +104,9 @@ public class FirstCreateAccountFragment extends Fragment {
         });
     }
 
+    /**
+     * Wires up display components.
+     */
     private void wireUpDisplay() {
         mEmailField = mBinding.createAccountEmailEditText;
         mPasswordField = mBinding.createAccountPasswordEditText;
@@ -87,6 +115,10 @@ public class FirstCreateAccountFragment extends Fragment {
         mRegisterButton = mBinding.createAccountButton;
     }
 
+    /**
+     * Checks that all text fields have been filled.
+     * @return true if all are filled, false otherwise.
+     */
     private boolean fieldsFilled() {
         mEmail = mEmailField.getText().toString();
         mPassword = mPasswordField.getText().toString();
@@ -95,20 +127,19 @@ public class FirstCreateAccountFragment extends Fragment {
         return !mEmail.isEmpty() && !mPassword.isEmpty() && !mConfirmPassword.isEmpty();
     }
 
-    private boolean checkFields() {
+    /**
+     * Checks that all field values are valid.
+     * @return true if all are valid, false otherwise.
+     */
+    private boolean validCredentials() {
         // check if email is already in database
         if (emailInDatabase()) {
-            Toast.makeText(getContext().getApplicationContext(), "This email is already registered with an existing account", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(), "This email is already registered with an existing account.", Toast.LENGTH_LONG).show();
             return false;
         }
         // check that email has an @
         if (!mEmail.contains("@") || !mEmail.contains(".com")) {
             Toast.makeText(getContext().getApplicationContext(), "Not a valid email.", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        // check if username is already in database
-        if (usernameTaken()) {
-            Toast.makeText(getContext().getApplicationContext(), "This username is taken.", Toast.LENGTH_SHORT).show();
             return false;
         }
         // check that both passwords match
@@ -119,13 +150,18 @@ public class FirstCreateAccountFragment extends Fragment {
         return true;
     }
 
-    // check if email is in database
+    /**
+     * Checks the database to see if the email has already been used.
+     * @return true if email in use, false otherwise.
+     */
     private boolean emailInDatabase() {
-        return false;
-    }
+        mViewModel.getAllUsers();
 
-    // check if username is in database
-    private boolean usernameTaken() {
+        for (User user : mUsers) {
+            if (user.getEmail().equals(mEmail)) {
+                return true;
+            }
+        }
         return false;
     }
 }

@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -15,8 +17,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.R;
+import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstForgotPasswordBinding;
+import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
+import java.util.List;
+
+/**
+ * Class: FirstForgotPasswordFragment.java
+ * Description: Part 1 of Forgot Password feature
+ *              Asks for the user's username and email for authentication before resetting their password.
+ */
 public class FirstForgotPasswordFragment extends Fragment {
 
     private FragmentFirstForgotPasswordBinding mBinding;
@@ -26,6 +37,10 @@ public class FirstForgotPasswordFragment extends Fragment {
 
     private String mEmail;
     private String mUsername;
+
+    private List<User> mUsers;
+
+    private UserViewModel mViewModel;
 
     public static FirstForgotPasswordFragment newInstance() {
         return new FirstForgotPasswordFragment();
@@ -46,6 +61,19 @@ public class FirstForgotPasswordFragment extends Fragment {
         mEmailField = mBinding.forgotPasswordEnterEmail;
         mUsernameField = mBinding.forgotPasswordEnterUsername;
 
+        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mViewModel.init();
+        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                if (users != null) {
+                    mUsers = users;
+                }
+            }
+        });
+
+        mViewModel.getAllUsers();
+
         mBinding.forgotPasswordEmailConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,14 +81,19 @@ public class FirstForgotPasswordFragment extends Fragment {
 
                 if (fieldsFilled()) {
                     if (validCredentials()) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("username", mUsername);
+
                         Fragment fragment = SecondForgotPasswordFragment.newInstance();
+                        fragment.setArguments(bundle);
+
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.forgot_password_fragment_fl, fragment).commit();
                     } else {
-                        Toast.makeText(getContext().getApplicationContext(), "This email and username are not associated with an account.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext().getApplicationContext(), "This email and username are not associated with an account.", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext().getApplicationContext(), "Please fill out all fields.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -75,10 +108,15 @@ public class FirstForgotPasswordFragment extends Fragment {
         return !mEmail.isEmpty() && !mUsername.isEmpty();
     }
 
-    // TODO
     private boolean validCredentials() {
-        // check that email and username are match in the database
-        return true;
+        mViewModel.getAllUsers();
+
+        for (User user : mUsers) {
+            if (user.getEmail().equals(mEmail) && user.getUsername().equals(mUsername)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
