@@ -75,6 +75,7 @@ public class FirstForgotPasswordFragment extends Fragment {
         return !mEmail.isEmpty() && !mUsername.isEmpty();
     }
 
+    // TODO
     private boolean validCredentials() {
         // check that email and username are match in the database
         return true;
