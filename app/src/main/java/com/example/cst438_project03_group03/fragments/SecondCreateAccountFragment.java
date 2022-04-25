@@ -150,7 +150,7 @@ public class SecondCreateAccountFragment extends Fragment {
                         mUser.setName(mName);
                         mUser.setImage(null);
                         mUser.setPassword(mPassword);
-                        
+
                         mViewModel.createUser(mUser);
                     }
                 }
