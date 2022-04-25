@@ -97,14 +97,14 @@ public class LoginActivity extends AppCompatActivity {
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mViewModel.init();
-
+        
         mViewModel.getUserLiveData().observe(this, new Observer<UserInfo>() {
             @Override
             public void onChanged(UserInfo user) {
                 mUserId = user.getUserId();
             }
         });
-
+        
         mViewModel.getUserListLiveData().observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(List<UserInfo> users) {
@@ -241,11 +241,11 @@ public class LoginActivity extends AppCompatActivity {
          */
         
         mViewModel.getUserByUsername(mUsername);
-
+        
         SharedPreferences.Editor editor = mSharedPrefs.edit();
         editor.putInt(Constants.USER_ID_KEY, mUserId);
         editor.apply();
-
+        
         Toast.makeText(LoginActivity.this, "Login Successful.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
