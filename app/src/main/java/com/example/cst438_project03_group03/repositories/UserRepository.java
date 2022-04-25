@@ -8,17 +8,22 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.cst438_project03_group03.api.ApiService;
 import com.example.cst438_project03_group03.database.User;
+import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.UserInfo;
 
 
 import java.util.List;
 
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 
 /**
  * Class: UserRepository.java
@@ -26,11 +31,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class UserRepository {
 
-    private static final String API_SERVICE_BASE_URL = "https://choicesproj3.youngphil5.repl.co/";
+    private static final String API_SERVICE_BASE_URL = "https://choicesproj3.pedrocsumb.repl.co/";
+    // private static final String API_SERVICE_BASE_URL = "https://choicesproj3.youngphil5.repl.co/";
 
     private final ApiService apiService;
-    private final MutableLiveData<List<User>> userListLiveData;
-    private final MutableLiveData<User> userLiveData;
+    private final MutableLiveData<List<UserInfo>> userListLiveData;
+    private final MutableLiveData<UserInfo> userLiveData;
+    private final MutableLiveData<CreateAccountResult> createUserLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service.
@@ -38,6 +45,7 @@ public class UserRepository {
     public UserRepository() {
         userListLiveData = new MutableLiveData<>();
         userLiveData = new MutableLiveData<>();
+        createUserLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -56,9 +64,9 @@ public class UserRepository {
      */
     public void getAllUsers() {
         apiService.getAllUsers()
-                .enqueue(new Callback<List<User>>() {
+                .enqueue(new Callback<List<UserInfo>>() {
                     @Override
-                    public void onResponse(@NonNull Call<List<User>> call, @NonNull Response<List<User>> response) {
+                    public void onResponse(@NonNull Call<List<UserInfo>> call, @NonNull Response<List<UserInfo>> response) {
                         if (response.body() != null) {
                             userListLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -66,7 +74,7 @@ public class UserRepository {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<User>> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
                         userListLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
@@ -79,9 +87,9 @@ public class UserRepository {
      */
     public void getUserByUsername(String username) {
         apiService.getUserByUsername(username)
-                .enqueue(new Callback<User>() {
+                .enqueue(new Callback<UserInfo>() {
                     @Override
-                    public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
+                    public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
                         if (response.body() != null) {
                             userLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -89,7 +97,7 @@ public class UserRepository {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<UserInfo> call, @NonNull Throwable t) {
                         userLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
@@ -98,17 +106,43 @@ public class UserRepository {
         });
     }
 
+    public void createUser(UserInfo userInfo) {
+        apiService.createUser(userInfo)
+                .enqueue(new Callback<CreateAccountResult>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CreateAccountResult> call, @NonNull Response<CreateAccountResult> response) {
+                        if (response.body() != null) {
+                            createUserLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<CreateAccountResult> call, @NonNull Throwable t) {
+                        createUserLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
     /**
      * @return LiveData of a list of users.
      */
-    public LiveData<List<User>> getUserListLiveData() {
+    public LiveData<List<UserInfo>> getUserListLiveData() {
         return userListLiveData;
     }
 
     /**
      * @return LiveData of one user.
      */
-    public LiveData<User> getUserLiveData() {
+    public LiveData<UserInfo> getUserLiveData() {
         return userLiveData;
+    }
+
+    /**
+     * @return LiveData of create user response.
+     */
+    public LiveData<CreateAccountResult> getCreateUserLiveData() {
+        return createUserLiveData;
     }
 }

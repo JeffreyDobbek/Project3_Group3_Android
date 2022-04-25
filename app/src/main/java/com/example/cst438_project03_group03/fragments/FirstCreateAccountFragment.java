@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstCreateAccountBinding;
+import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class FirstCreateAccountFragment extends Fragment {
     private String mPassword;
     private String mConfirmPassword;
 
-    private List<User> mUsers;
+    private List<UserInfo> mUsers;
 
     private Button mRegisterButton;
 
@@ -70,11 +71,13 @@ public class FirstCreateAccountFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mViewModel.init();
-        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
-            public void onChanged(List<User> response) {
-                if (response != null) {
-                    mUsers = response;
+            public void onChanged(List<UserInfo> users) {
+                if (users != null) {
+                    mUsers = users;
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -157,7 +160,7 @@ public class FirstCreateAccountFragment extends Fragment {
     private boolean emailInDatabase() {
         mViewModel.getAllUsers();
 
-        for (User user : mUsers) {
+        for (UserInfo user : mUsers) {
             if (user.getEmail().equals(mEmail)) {
                 return true;
             }

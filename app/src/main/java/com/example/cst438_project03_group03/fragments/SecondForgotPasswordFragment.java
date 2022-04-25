@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.example.cst438_project03_group03.LoginActivity;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentSecondForgotPasswordBinding;
+import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class SecondForgotPasswordFragment extends Fragment {
     private String mConfirmPassword;
     private String mUsername;
 
-    private User mUser;
+    private UserInfo mUser;
 
     private UserViewModel mViewModel;
 
@@ -71,9 +72,9 @@ public class SecondForgotPasswordFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mViewModel.init();
-        mViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<User>() {
+        mViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @Override
-            public void onChanged(User user) {
+            public void onChanged(UserInfo user) {
                 if (user != null) {
                     mUser = user;
                 }

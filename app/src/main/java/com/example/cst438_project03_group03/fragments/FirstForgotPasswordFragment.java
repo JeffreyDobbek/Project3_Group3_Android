@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstForgotPasswordBinding;
+import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class FirstForgotPasswordFragment extends Fragment {
     private String mEmail;
     private String mUsername;
 
-    private List<User> mUsers;
+    private List<UserInfo> mUsers;
 
     private UserViewModel mViewModel;
 
@@ -63,9 +64,9 @@ public class FirstForgotPasswordFragment extends Fragment {
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mViewModel.init();
-        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<User>>() {
+        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
-            public void onChanged(List<User> users) {
+            public void onChanged(List<UserInfo> users) {
                 if (users != null) {
                     mUsers = users;
                 }
@@ -111,7 +112,7 @@ public class FirstForgotPasswordFragment extends Fragment {
     private boolean validCredentials() {
         mViewModel.getAllUsers();
 
-        for (User user : mUsers) {
+        for (UserInfo user : mUsers) {
             if (user.getEmail().equals(mEmail) && user.getUsername().equals(mUsername)) {
                 return true;
             }
