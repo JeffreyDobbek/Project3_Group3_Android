@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.R;
+import com.example.cst438_project03_group03.database.Post;
 import com.example.cst438_project03_group03.adapters.PostResultsAdapter;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.PostInfo;
@@ -28,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private int mUserId;
 
     private Button logoutButton;
-    private Button mViewPostsButton;
+    private Button makePostButton;
+    private Button viewPostsButton;
 
     private SharedPreferences mSharedPrefs;
 
@@ -41,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
 
         logoutButton = findViewById(R.id.logOutButton);
-        mViewPostsButton = findViewById(R.id.viewPostsButton);
+        makePostButton = findViewById(R.id.makePostButton);
+        viewPostsButton = findViewById(R.id.viewPostsButton);
 
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,10 +60,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mViewPostsButton.setOnClickListener(new View.OnClickListener() {
+        makePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LiveFeedActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+                startActivity(intent);
+            }
+        });
+        viewPostsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PostActivity.class);
                 startActivity(intent);
             }
         });
