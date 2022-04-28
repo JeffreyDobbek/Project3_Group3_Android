@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CST438_Project03_Group03">
         <activity
+            android:name=".ViewPostsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PostActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
