@@ -32,6 +32,8 @@ import java.util.List;
 
 import com.google.android.gms.tasks.Task;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 /**
  * Class: LoginActivity.java
  * Description: First screen when opening the app.
@@ -206,7 +208,9 @@ public class LoginActivity extends AppCompatActivity {
         mViewModel.getAllUsers();
 
         for (UserInfo user : mUsers) {
-            if (user.getUsername().equals(mUsername) && user.getPassword().equals(mPassword)) {
+            BCrypt.Result result = BCrypt.verifyer().verify(mPassword.toCharArray(), user.getPassword());
+
+            if (user.getUsername().equals(mUsername) && result.verified) {
                 return true;
             }
         }
@@ -241,11 +245,11 @@ public class LoginActivity extends AppCompatActivity {
          */
         
         mViewModel.getUserByUsername(mUsername);
-        
+
         SharedPreferences.Editor editor = mSharedPrefs.edit();
         editor.putInt(Constants.USER_ID_KEY, mUserId);
         editor.apply();
-        
+
         Toast.makeText(LoginActivity.this, "Login Successful.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);

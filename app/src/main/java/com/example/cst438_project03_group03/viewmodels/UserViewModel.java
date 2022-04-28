@@ -34,6 +34,7 @@ public class UserViewModel extends AndroidViewModel {
 
     public void init() {
         userRepository = new UserRepository();
+
         userListLiveData = userRepository.getUserListLiveData();
         userLiveData = userRepository.getUserLiveData();
         createUserLiveData = userRepository.getCreateUserLiveData();
@@ -41,6 +42,9 @@ public class UserViewModel extends AndroidViewModel {
 
     public void getAllUsers() {
         userRepository.getAllUsers();
+    }
+    public void getUserByUserId(int userId) {
+        userRepository.getUserByUserId(userId);
     }
     public void getUserByUsername(String username) {
         userRepository.getUserByUsername(username);

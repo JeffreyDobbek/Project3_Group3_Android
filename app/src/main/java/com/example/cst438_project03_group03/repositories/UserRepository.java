@@ -10,6 +10,7 @@ import com.example.cst438_project03_group03.api.ApiService;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CreateAccountResult;
 import com.example.cst438_project03_group03.models.UserInfo;
+import com.example.cst438_project03_group03.util.Constants;
 
 
 import java.util.List;
@@ -31,16 +32,13 @@ import retrofit2.http.Body;
  */
 public class UserRepository {
 
-    private static final String API_SERVICE_BASE_URL = "https://choicesproj3.pedrocsumb.repl.co/";
-    // private static final String API_SERVICE_BASE_URL = "https://choicesproj3.youngphil5.repl.co/";
-
     private final ApiService apiService;
     private final MutableLiveData<List<UserInfo>> userListLiveData;
     private final MutableLiveData<UserInfo> userLiveData;
     private final MutableLiveData<CreateAccountResult> createUserLiveData;
 
     /**
-     * Constructor that initializes the LiveData variables and API service.
+     * Constructor that initializes the LiveData variables and API service with Retrofit.
      */
     public UserRepository() {
         userListLiveData = new MutableLiveData<>();
@@ -52,7 +50,7 @@ public class UserRepository {
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
         apiService = new Retrofit.Builder()
-                .baseUrl(API_SERVICE_BASE_URL)
+                .baseUrl(Constants.API_SERVICE_BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -82,7 +80,48 @@ public class UserRepository {
     }
 
     /**
-     * Gets one user from the username by their unique username.
+     * Gets one user from the database by their unique id.
+     * @param userId The user's id.
+     */
+    public void getUserByUserId(int userId) {
+        apiService.getUserByUserId(userId)
+                .enqueue(new Callback<UserInfo>() {
+                    @Override
+                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                        if (response.body() != null) {
+                            userLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserInfo> call, Throwable t) {
+                        userLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
+
+    /*
+    public void getUserByUserId(int userId) {
+        try {
+            Response<UserInfo> response = apiService.getUserByUserId(userId).execute();
+            if (response.body() != null) {
+                userLiveData.postValue(response.body());
+                Log.i("success", "success");
+            } else {
+                userLiveData.postValue(null);
+                Log.i("fail", "fail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
+    /**
+     * Gets one user from the database by their unique username.
      * @param username The user's username.
      */
     public void getUserByUsername(String username) {

@@ -2,6 +2,8 @@ package com.example.cst438_project03_group03.api;
 
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.ImageInfo;
+import com.example.cst438_project03_group03.models.PostInfo;
 import com.example.cst438_project03_group03.models.UserInfo;
 
 import java.util.List;
@@ -30,6 +32,16 @@ public interface ApiService {
     Call<List<UserInfo>> getAllUsers();
 
     /**
+     * API request to retrieve a user from the database given their unique id.
+     * @param userId The user's id.
+     * @return one user.
+     */
+    @GET("api/getUserById")
+    Call<UserInfo> getUserByUserId(
+            @Query("userId") int userId
+    );
+
+    /**
      * API request to retrieve a user from the database given their unique username.
      * @param username The user's username.
      * @return one user.
@@ -45,4 +57,13 @@ public interface ApiService {
      */
     @POST("api/signUp")
     Call<CreateAccountResult> createUser(@Body UserInfo userInfo);
+
+    @GET("api/allLivePosts")
+    Call<List<PostInfo>> getAllLivePosts();
+
+    @GET("api/getPicsByPostId")
+    Call<List<ImageInfo>> getPicsByPostId(
+            @Query("postId") int postId
+    );
+
 }
