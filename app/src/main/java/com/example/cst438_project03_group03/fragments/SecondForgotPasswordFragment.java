@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +15,18 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.LoginActivity;
+import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentSecondForgotPasswordBinding;
+import com.example.cst438_project03_group03.models.UserInfo;
+import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
+import java.util.List;
+
+/**
+ * Class: SecondForgotPasswordFragment.java
+ * Description: Part 2 of Forgot Password feature
+ *              User can create their new password.
+ */
 public class SecondForgotPasswordFragment extends Fragment {
 
     private FragmentSecondForgotPasswordBinding mBinding;
@@ -24,6 +36,11 @@ public class SecondForgotPasswordFragment extends Fragment {
 
     private String mNewPassword;
     private String mConfirmPassword;
+    private String mUsername;
+
+    private UserInfo mUser;
+
+    private UserViewModel mViewModel;
 
     public static SecondForgotPasswordFragment newInstance() {
         return new SecondForgotPasswordFragment();
@@ -46,8 +63,25 @@ public class SecondForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+        assert bundle != null;
+        mUsername = bundle.getString("username");
+
         mNewPasswordField = mBinding.forgotPasswordEnterNewPassword;
         mConfirmPasswordField = mBinding.forgotPasswordConfirmNewPassword;
+
+        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mViewModel.init();
+        mViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
+            @Override
+            public void onChanged(UserInfo user) {
+                if (user != null) {
+                    mUser = user;
+                }
+            }
+        });
+
+        mViewModel.getUserByUsername(mUsername);
 
         mBinding.forgotPasswordConfirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +91,7 @@ public class SecondForgotPasswordFragment extends Fragment {
                 if (fieldsFilled()) {
                     if (isNew()) {
                         if (passwordsMatch()) {
+                            updatePassword();
                             Toast.makeText(getContext().getApplicationContext(), "Password Successfully Reset.", Toast.LENGTH_SHORT).show();
 
                             Intent intent = new Intent(view.getContext(), LoginActivity.class);
@@ -83,13 +118,18 @@ public class SecondForgotPasswordFragment extends Fragment {
         return !mNewPassword.isEmpty() && !mConfirmPassword.isEmpty();
     }
 
-    // TODO: need to check in the database
     private boolean isNew() {
-        // check that new password is not the same as the old password
-        return true;
+        mViewModel.getUserByUsername(mUsername);
+
+        return !mUser.getPassword().equals(mNewPassword);
     }
 
     private boolean passwordsMatch() {
         return mNewPassword.equals(mConfirmPassword);
+    }
+
+    // TODO: update user's information in the database
+    private void updatePassword() {
+
     }
 }

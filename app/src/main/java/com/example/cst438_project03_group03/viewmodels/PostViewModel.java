@@ -8,13 +8,16 @@ import androidx.lifecycle.LiveData;
 
 import com.example.cst438_project03_group03.database.Post;
 import com.example.cst438_project03_group03.database.User;
+import com.example.cst438_project03_group03.models.PostInfo;
 import com.example.cst438_project03_group03.repositories.PostRepository;
 import com.example.cst438_project03_group03.repositories.UserRepository;
+
+import java.util.List;
 
 public class PostViewModel extends AndroidViewModel {
 
     private PostRepository postRepository;
-    private LiveData<Post> postLiveData;
+    private LiveData<List<PostInfo>> allLivePostsLiveData;
 
     public PostViewModel(@NonNull Application application) {
         super(application);
@@ -22,14 +25,14 @@ public class PostViewModel extends AndroidViewModel {
 
     public void init() {
         postRepository = new PostRepository();
-        postLiveData = postRepository.getPostLiveData();
+        allLivePostsLiveData = postRepository.getAllLivePostsLiveData();
     }
 
-    public void getPosts() {
-        postRepository.getPosts();
+    public void getAllLivePosts() {
+        postRepository.getAllLivePosts();
     }
 
-    public LiveData<Post> getPostLiveData() {
-        return postLiveData;
+    public LiveData<List<PostInfo>> getAllLivePostsLiveData() {
+        return allLivePostsLiveData;
     }
 }

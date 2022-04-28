@@ -48,8 +48,6 @@ https://lucid.app/lucidchart/6c5f6941-ec01-453e-96c7-be3e5150a49d/edit?beaconFlo
 
 As of now, there are four tables that communicate with each other via their their respecitive IDs. This done to ensure that the correct posts are linked to the correct users, images and comments are linked to the correct posts, etc. Subject to change during development.
 
+### Useful Links
 
- ### Useful Links
- 
- 
- 
+Android Studio Upload Picture Tutorial - https://www.youtube.com/watch?v=e8x-nu9-_BM
