@@ -22,12 +22,14 @@ import com.example.cst438_project03_group03.viewmodels.PostViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class LiveFeedActivity extends AppCompatActivity {
 
     private List<PostInfo> mLivePosts;
     private List<ImageInfo> mPostImages = new ArrayList<>();
+    private List<List<ImageInfo>> mListOfImages = new ArrayList<>();
 
     private String mProfilePic;
     private String mUsername;
@@ -39,6 +41,9 @@ public class LiveFeedActivity extends AppCompatActivity {
     private PostResultsAdapter mAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private HashMap<Integer, PostInfo> mPostMap = new HashMap<>();
+    private HashMap<Integer, List<ImageInfo>> mImageMap = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,30 +66,12 @@ public class LiveFeedActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<PostInfo> posts) {
                 if (posts != null) {
-                    mLivePosts = posts;
-
-                    for (PostInfo post : mLivePosts) {
-                        // List<ImageInfo> temp = mPostImages;
-                        mImageViewModel.getImages(post.getPostId());
-
-                        // TODO: Wait until all images by post id are retrieved
-
-                        // once retrieved, do this
-                        post.setImages(mPostImages);
-
-                        /**
-                        mUserViewModel.getUserByUserId(post.getUserId());
-                        post.setProfilePic(mProfilePic);
-                        post.setUsername(mUsername);
-                         */
-                    }
-
-                    Toast.makeText(getApplicationContext(), mLivePosts.get(0).getCaption() + "", Toast.LENGTH_SHORT).show();
+                    mAdapter.setResults(posts);
+                    mImageViewModel.getAllPostPics();
 
                     /**
                      * Set posts in adapter.
                      */
-                    mAdapter.setResults(mLivePosts);
                 } else {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
@@ -106,7 +93,22 @@ public class LiveFeedActivity extends AppCompatActivity {
             public void onChanged(List<ImageInfo> postImages) {
                 if (postImages != null) {
                     mPostImages = postImages;
-                    System.out.println(mPostImages.size());
+                    mAdapter.setImages(mImageMap);
+                }
+            }
+        });
+
+        mImageViewModel.getPostImagesLiveData().observe(this, new Observer<List<ImageInfo>>() {
+            @Override
+            public void onChanged(List<ImageInfo> images) {
+                if (images != null) {
+                    for (ImageInfo image : images) {
+                        if (!mImageMap.containsKey(image.getPostId())) {
+                            mImageMap.put(image.getPostId(), new ArrayList<>());
+                        }
+                        mImageMap.get(image.getPostId()).add(image);
+                    }
+                    mAdapter.setImages(mImageMap);
                 }
             }
         });
@@ -133,24 +135,5 @@ public class LiveFeedActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    /*
-    class DownloadTask extends AsyncTask<> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-        }
-    }
-    */
 
 }

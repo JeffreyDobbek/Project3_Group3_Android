@@ -18,6 +18,7 @@ import com.example.cst438_project03_group03.models.PostInfo;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL;
@@ -27,6 +28,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.PostResultsHolder> {
 
     private List<PostInfo> results = new ArrayList<>();
+    private HashMap<Integer, List<ImageInfo>> images = new HashMap<>();
 
     @NonNull
     @Override
@@ -40,6 +42,8 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     @Override
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = results.get(position);
+
+        post.setImages(images.get(post.getPostId()));
 
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
@@ -97,6 +101,10 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     public void setResults(List<PostInfo> results) {
         this.results = results;
+    }
+
+    public void setImages(HashMap<Integer, List<ImageInfo>> images) {
+        this.images = images;
         notifyDataSetChanged();
     }
 
