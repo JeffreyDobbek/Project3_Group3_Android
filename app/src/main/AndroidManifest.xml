@@ -19,9 +19,6 @@
             android:name=".LiveFeedActivity"
             android:exported="false" />
         <activity
-            android:name=".ViewPostsActivity"
-            android:exported="false" />
-        <activity
             android:name=".PostActivity"
             android:exported="false" />
         <activity

@@ -27,13 +27,6 @@ import java.util.List;
 
 public class LiveFeedActivity extends AppCompatActivity {
 
-    private List<PostInfo> mLivePosts;
-    private List<ImageInfo> mPostImages = new ArrayList<>();
-    private List<List<ImageInfo>> mListOfImages = new ArrayList<>();
-
-    private String mProfilePic;
-    private String mUsername;
-
     private UserViewModel mUserViewModel;
     private PostViewModel mPostViewModel;
     private ImageViewModel mImageViewModel;
@@ -42,7 +35,7 @@ public class LiveFeedActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private HashMap<Integer, PostInfo> mPostMap = new HashMap<>();
+    private HashMap<Integer, UserInfo> mUserMap = new HashMap<>();
     private HashMap<Integer, List<ImageInfo>> mImageMap = new HashMap<>();
 
     @Override
@@ -62,42 +55,40 @@ public class LiveFeedActivity extends AppCompatActivity {
         mImageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
         mImageViewModel.init();
 
+        /**
+         * Listens for request for all live posts in the database.
+         */
         mPostViewModel.getAllLivePostsLiveData().observe(this, new Observer<List<PostInfo>>() {
             @Override
             public void onChanged(List<PostInfo> posts) {
                 if (posts != null) {
-                    mAdapter.setResults(posts);
-                    mImageViewModel.getAllPostPics();
-
-                    /**
-                     * Set posts in adapter.
-                     */
+                    mAdapter.setPosts(posts);
+                    mUserViewModel.getAllUsers();
                 } else {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        mUserViewModel.getUserLiveData().observe(this, new Observer<UserInfo>() {
+        /**
+         * Listens for request for all users in the database.
+         */
+        mUserViewModel.getUserListLiveData().observe(this, new Observer<List<UserInfo>>() {
             @Override
-            public void onChanged(UserInfo user) {
-                if (user != null) {
-                    mProfilePic = user.getImage();
-                    mUsername = user.getUsername();
+            public void onChanged(List<UserInfo> users) {
+                if (users != null) {
+                    for (UserInfo user : users) {
+                        mUserMap.put(user.getUserId(), user);
+                    }
+                    mAdapter.setUsers(mUserMap);
+                    mImageViewModel.getAllPostPics();
                 }
             }
         });
 
-        mImageViewModel.getPostImagesLiveData().observe(this, new Observer<List<ImageInfo>>() {
-            @Override
-            public void onChanged(List<ImageInfo> postImages) {
-                if (postImages != null) {
-                    mPostImages = postImages;
-                    mAdapter.setImages(mImageMap);
-                }
-            }
-        });
-
+        /**
+         * Listens for request for all images in the database.
+         */
         mImageViewModel.getPostImagesLiveData().observe(this, new Observer<List<ImageInfo>>() {
             @Override
             public void onChanged(List<ImageInfo> images) {
@@ -109,11 +100,12 @@ public class LiveFeedActivity extends AppCompatActivity {
                         mImageMap.get(image.getPostId()).add(image);
                     }
                     mAdapter.setImages(mImageMap);
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
 
-        refreshFeed();
+        mPostViewModel.getAllLivePosts();
 
         /**
          * Setting up post recycler view
@@ -122,18 +114,14 @@ public class LiveFeedActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
 
+        /**
+         * Swipe down to refresh the live post feed.
+         */
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshFeed();
+                mPostViewModel.getAllLivePosts();
             }
         });
     }
-
-    private void refreshFeed() {
-        mPostViewModel.getAllLivePosts();
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
-
-
 }
