@@ -1,6 +1,9 @@
 package com.example.cst438_project03_group03.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,20 +20,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.cst438_project03_group03.BuildConfig;
 import com.example.cst438_project03_group03.LoginActivity;
-import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentSecondCreateAccountBinding;
 import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.ImgurResponse;
+import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.UserInfo;
+import com.example.cst438_project03_group03.viewmodels.ImageViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import okhttp3.ResponseBody;
 
 /**
  * Class: SecondCreateAccountFragment.java
@@ -50,16 +58,19 @@ public class SecondCreateAccountFragment extends Fragment {
     private String mConfirmPassword;
     private String mUsername;
     private String mName;
+    private String mPic;
 
     private UserInfo mUser;
     private List<UserInfo> mUsers;
+    private ImgurUpload mImgurUpload = new ImgurUpload();
 
     private Button mRegisterButton;
     private Button mUploadPictureButton;
 
     private FragmentSecondCreateAccountBinding mBinding;
 
-    private UserViewModel mViewModel;
+    private UserViewModel mUserViewModel;
+    private ImageViewModel mImageViewModel;
 
     public static SecondCreateAccountFragment newInstance() {
         return new SecondCreateAccountFragment();
@@ -90,13 +101,16 @@ public class SecondCreateAccountFragment extends Fragment {
 
         wireUpDisplay();
 
-        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mViewModel.init();
+        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mUserViewModel.init();
+
+        mImageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
+        mImageViewModel.init();
 
         /**
          * Get request for all users from the database.
          */
-        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+        mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(List<UserInfo> users) {
                 if (users != null) {
@@ -105,19 +119,44 @@ public class SecondCreateAccountFragment extends Fragment {
             }
         });
 
-        mViewModel.getAllUsers();
+        mUserViewModel.getAllUsers();
 
         /**
          * Post request to save a user to the database.
          */
-        mViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResult>() {
+        mUserViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResult>() {
             @Override
             public void onChanged(CreateAccountResult response) {
                 if (response != null) {
                     Toast.makeText(getContext().getApplicationContext(), "Account Successfully Created.", Toast.LENGTH_SHORT).show();
                     Log.i("newId", response.getNewId() + "");
+
                     Intent intent = new Intent(view.getContext(), LoginActivity.class);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        /**
+         * Post request to upload an image to Imgur.
+         * Used to retrieve an imgur link.
+         */
+        mImageViewModel.getImgurResponseLiveData().observe(getViewLifecycleOwner(), new Observer<ImgurResponse>() {
+            @Override
+            public void onChanged(ImgurResponse imgurResponse) {
+                if (imgurResponse != null) {
+                    mPic = imgurResponse.getData().getLink();
+                    mUser = new UserInfo();
+
+                    mUser.setUsername(mUsername);
+                    mUser.setEmail(mEmail);
+                    mUser.setName(mName);
+                    mUser.setPic(mPic);
+                    mUser.setPassword(mPassword);
+
+                    mUserViewModel.createUser(mUser);
                 } else {
                     Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
@@ -143,15 +182,7 @@ public class SecondCreateAccountFragment extends Fragment {
             public void onClick(View v) {
                 if (fieldsFilled()) {
                     if (validUsername()) {
-                        mUser = new UserInfo();
-
-                        mUser.setUsername(mUsername);
-                        mUser.setEmail(mEmail);
-                        mUser.setName(mName);
-                        mUser.setImage(null);
-                        mUser.setPassword(mPassword);
-
-                        mViewModel.createUser(mUser);
+                        mImageViewModel.imgurUpload(mImgurUpload, "Client-ID " + BuildConfig.IMGUR_CLIENT_ID);
                     }
                 }
             }
@@ -189,6 +220,15 @@ public class SecondCreateAccountFragment extends Fragment {
         if (requestCode == RESULT_LOAD_IMAGE && data != null) {
             Uri selectedImage = data.getData();
             mProfilePic.setImageURI(selectedImage);
+
+            BitmapDrawable drawable = (BitmapDrawable) mProfilePic.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            String image = Base64.getEncoder().encodeToString(byteArray);
+
+            mImgurUpload.setImage(image);
         }
     }
 
@@ -208,7 +248,7 @@ public class SecondCreateAccountFragment extends Fragment {
      * @return true if username is not taken, false otherwise.
      */
     private boolean validUsername() {
-        mViewModel.getAllUsers();
+        mUserViewModel.getAllUsers();
 
         for (UserInfo user : mUsers) {
             if (user.getUsername().equals(mUsername)) {

@@ -45,6 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.CLIENT_ID"
+            android:value="${IMGUR_CLIENT_ID}" />
     </application>
 
 </manifest>

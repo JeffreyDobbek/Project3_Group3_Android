@@ -64,9 +64,12 @@ public class LiveFeedActivity extends AppCompatActivity {
                     mLivePosts = posts;
 
                     for (PostInfo post : mLivePosts) {
-                        List<ImageInfo> temp = mPostImages;
+                        // List<ImageInfo> temp = mPostImages;
                         mImageViewModel.getImages(post.getPostId());
 
+                        // TODO: Wait until all images by post id are retrieved
+
+                        // once retrieved, do this
                         post.setImages(mPostImages);
 
                         /**

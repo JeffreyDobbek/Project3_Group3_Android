@@ -31,6 +31,10 @@ public class UserInfo {
     @Expose
     private String image;
 
+    @SerializedName("pic")
+    @Expose
+    private String pic;
+
     public UserInfo() {
     }
 
@@ -42,7 +46,7 @@ public class UserInfo {
      * @param password The user's password.
      * @param image The user's profile picture (an Imgur link).
      */
-    public UserInfo(String username, String email, String name, String password, String image) {
+    public UserInfo(String username, String email, String name, String password, String image, String pic) {
         this.username = username;
         this.email = email;
         this.name = name;
@@ -96,5 +100,13 @@ public class UserInfo {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getPic() {
+        return pic;
+    }
+
+    public void setPic(String pic) {
+        this.pic = pic;
     }
 }
