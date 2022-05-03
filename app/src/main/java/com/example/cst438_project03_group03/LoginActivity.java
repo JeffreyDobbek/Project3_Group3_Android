@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.gms.tasks.Task;
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUserText, mPasswordText;
 
     private UserDao userDao;
-    private List<UserInfo> mUsers;
+    private List<UserInfo> mUsers = new ArrayList<>();
 
     private UserViewModel mViewModel;
 

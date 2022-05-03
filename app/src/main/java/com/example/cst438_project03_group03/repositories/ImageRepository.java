@@ -81,6 +81,25 @@ public class ImageRepository {
                 });
     }
 
+    public void getAllPostPics() {
+        apiService.getAllPostPics()
+                .enqueue(new Callback<List<ImageInfo>>() {
+                    @Override
+                    public void onResponse(Call<List<ImageInfo>> call, Response<List<ImageInfo>> response) {
+                        if (response.body() != null) {
+                            postImagesLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ImageInfo>> call, Throwable t) {
+                        postImagesLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
     public void imgurUpload(ImgurUpload imgurUpload, String clientId) {
         imgurApiService.imgurUpload(imgurUpload, clientId)
                 .enqueue(new Callback<ImgurResponse>() {
@@ -99,23 +118,6 @@ public class ImageRepository {
                     }
                 });
     }
-
-    /*
-    public void getPostImages(int postId) {
-        try {
-            Response<List<ImageInfo>> response = apiService.getPicsByPostId(postId).execute();
-
-            if (response.body() != null) {
-                postImagesLiveData.postValue(response.body());
-            } else {
-                postImagesLiveData.postValue(null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-     */
 
     /**
      * @return LiveData of post images response.

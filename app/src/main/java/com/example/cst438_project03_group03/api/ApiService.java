@@ -66,4 +66,7 @@ public interface ApiService {
             @Query("postId") int postId
     );
 
+    @GET("api/getAllPostPics")
+    Call<List<ImageInfo>> getAllPostPics();
+
 }

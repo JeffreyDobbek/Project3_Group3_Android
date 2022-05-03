@@ -14,10 +14,12 @@ import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.database.Post;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.PostInfo;
+import com.example.cst438_project03_group03.models.UserInfo;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.microedition.khronos.opengles.GL;
@@ -26,7 +28,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.PostResultsHolder> {
 
-    private List<PostInfo> results = new ArrayList<>();
+    private List<PostInfo> posts = new ArrayList<>();
+    private HashMap<Integer, UserInfo> users = new HashMap<>();
+    private HashMap<Integer, List<ImageInfo>> images = new HashMap<>();
 
     @NonNull
     @Override
@@ -39,7 +43,14 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
-        PostInfo post = results.get(position);
+        PostInfo post = posts.get(position);
+
+        post.setUsername(users.get(post.getUserId()).getUsername());
+
+        if (users.get(post.getUserId()).getImage() != null) {
+            post.setProfilePic(users.get(post.getUserId()).getImage());
+        }
+        post.setImages(images.get(post.getPostId()));
 
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
@@ -92,11 +103,19 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     @Override
     public int getItemCount() {
-        return results.size();
+        return posts.size();
     }
 
-    public void setResults(List<PostInfo> results) {
-        this.results = results;
+    public void setPosts(List<PostInfo> posts) {
+        this.posts = posts;
+    }
+
+    public void setUsers(HashMap<Integer, UserInfo> users) {
+        this.users = users;
+    }
+
+    public void setImages(HashMap<Integer, List<ImageInfo>> images) {
+        this.images = images;
         notifyDataSetChanged();
     }
 

@@ -5,12 +5,18 @@
     xmlns:cardView="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     cardView:cardCornerRadius="8dp"
     cardView:cardElevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -30,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="11dp"
                 android:text="@string/username"
                 android:textColor="@color/black"
                 android:textSize="15sp"
@@ -120,7 +126,7 @@
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="10dp"
                 android:src="@drawable/ic_comment"/>
 
@@ -128,7 +134,7 @@
                 android:id="@+id/live_feed_num_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginStart="5dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
@@ -136,6 +142,18 @@
                 android:text="0" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/view_all_comments_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:fontFamily="sans-serif-light"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="@string/view_all_comments"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 

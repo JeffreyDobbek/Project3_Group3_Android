@@ -38,6 +38,9 @@ public class ImageViewModel extends AndroidViewModel {
     public void getImages(int postId) {
         imageRepository.getPostImages(postId);
     }
+    public void getAllPostPics() {
+        imageRepository.getAllPostPics();
+    }
     public void imgurUpload(ImgurUpload imgurUpload, String clientId) {
         imageRepository.imgurUpload(imgurUpload, clientId);
     }
