@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/make_post_item"
+        android:icon="@drawable/ic_add_box"
+        android:iconTint="@color/black"
+        android:title="Make Post Item"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/profile_item"
+        android:icon="@drawable/ic_account_circle"
+        android:iconTint="@color/black"
+        android:title="Profile Item"
+        app:showAsAction="ifRoom" />
+
+</menu>

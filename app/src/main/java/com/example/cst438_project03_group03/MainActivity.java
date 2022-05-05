@@ -1,31 +1,26 @@
 package com.example.cst438_project03_group03;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.cst438_project03_group03.R;
-import com.example.cst438_project03_group03.database.Post;
-import com.example.cst438_project03_group03.adapters.PostResultsAdapter;
-import com.example.cst438_project03_group03.models.ImageInfo;
-import com.example.cst438_project03_group03.models.PostInfo;
 import com.example.cst438_project03_group03.util.Constants;
-import com.example.cst438_project03_group03.viewmodels.ImageViewModel;
-import com.example.cst438_project03_group03.viewmodels.PostViewModel;
 
-import java.util.List;
-
+/**
+ * Class: MainActivity.java
+ * Description: Holds buttons to take user to main two features
+ */
 public class MainActivity extends AppCompatActivity {
 
     private int mUserId;
@@ -35,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
     private Button viewPostsButton;
 
     private SharedPreferences mSharedPrefs;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,5 +89,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.make_post_item:
+                intent = new Intent(getApplicationContext(), PostActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.profile_item:
+                intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
