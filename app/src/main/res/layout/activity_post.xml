@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine"
-        app:layout_constraintVertical_bias="0.169" />
+        app:layout_constraintVertical_bias="0.526" />
 
     <EditText
         android:id="@+id/editTextTextMultiLine"
@@ -31,6 +31,26 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.352" />
+        app:layout_constraintVertical_bias="0.545" />
+
+    <Button
+        android:id="@+id/uploadPhotoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Upload Photo"
+        app:layout_constraintBottom_toTopOf="@+id/postButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextMultiLine" />
+
+    <ImageView
+        android:id="@+id/postImageView"
+        android:layout_width="199dp"
+        android:layout_height="223dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextTextMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
