@@ -16,6 +16,14 @@
         android:theme="@style/Theme.CST438_Project03_Group03"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/Theme.CST438_Project03_Group03.NoActionBar" />
+        <activity
             android:name=".LiveFeedActivity"
             android:exported="false" />
         <activity
