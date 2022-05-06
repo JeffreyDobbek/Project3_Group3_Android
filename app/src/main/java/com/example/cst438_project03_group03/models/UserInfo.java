@@ -46,7 +46,7 @@ public class UserInfo {
      * @param password The user's password.
      * @param image The user's profile picture (an Imgur link).
      */
-    public UserInfo(String username, String email, String name, String password, String image, String pic) {
+    public UserInfo(String username, String email, String name, String password, String image) {
         this.username = username;
         this.email = email;
         this.name = name;

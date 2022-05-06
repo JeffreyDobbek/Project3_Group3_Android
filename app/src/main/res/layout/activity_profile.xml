@@ -69,9 +69,11 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_profile_pic_cv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
                 android:src="@drawable/ic_account_circle" />
 
             <LinearLayout
@@ -112,7 +114,7 @@
                     android:backgroundTint="@color/black"
                     android:text="Edit Profile"
                     android:textColor="@color/white"
-                    android:textSize="10sp"
+                    android:textSize="15sp"
                     android:textAllCaps="false"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
