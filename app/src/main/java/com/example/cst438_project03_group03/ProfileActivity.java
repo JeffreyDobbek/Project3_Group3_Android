@@ -22,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.graphics.drawable.AnimatedStateListDrawableCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
@@ -39,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ProfileActivity extends AppCompatActivity {
 
-private ActivityProfileBinding binding;
+    private ActivityProfileBinding binding;
 
     private SharedPreferences mSharedPrefs;
 

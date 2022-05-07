@@ -17,7 +17,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
 
         FirstForgotPasswordFragment firstForgotPasswordFragment = FirstForgotPasswordFragment.newInstance();
-        SecondForgotPasswordFragment secondForgotPasswordFragment = SecondForgotPasswordFragment.newInstance();
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.forgot_password_fragment_fl, firstForgotPasswordFragment)

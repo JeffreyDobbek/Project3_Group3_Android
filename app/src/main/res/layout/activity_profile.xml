@@ -42,7 +42,7 @@
                     android:gravity="center"
                     android:minHeight="?actionBarSize"
                     android:padding="@dimen/appbar_padding"
-                    android:text="@string/app_name"
+                    android:text="Profile"
                     android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -72,9 +72,9 @@
                 android:id="@+id/profile_profile_pic_cv"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginBottom="10dp"
-                android:src="@drawable/ic_account_circle" />
+                android:src= "@color/black" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -87,9 +87,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:layout_marginTop="12dp"
-                    android:layout_marginStart="5dp"
-                    android:textSize="20sp"
-                    android:text="Name" />
+                    android:layout_marginStart="10dp"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/profile_username_tv"
@@ -97,9 +96,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:layout_marginTop="5dp"
-                    android:layout_marginStart="5dp"
-                    android:textStyle="bold"
-                    android:text="Username" />
+                    android:layout_marginStart="10dp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -46,6 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  *              User can choose their profile picture and provide a username and their real name.
  */
 public class SecondCreateAccountFragment extends Fragment {
+
     private static final int RESULT_LOAD_IMAGE = 1;
 
     private CircleImageView mProfilePic;
