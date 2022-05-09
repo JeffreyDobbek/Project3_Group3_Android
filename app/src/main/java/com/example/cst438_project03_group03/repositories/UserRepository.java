@@ -87,7 +87,7 @@ public class UserRepository {
         apiService.getUserByUserId(userId)
                 .enqueue(new Callback<UserInfo>() {
                     @Override
-                    public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
+                    public void onResponse(@NonNull Call<UserInfo> call, @NonNull Response<UserInfo> response) {
                         if (response.body() != null) {
                             userLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -95,29 +95,12 @@ public class UserRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<UserInfo> call, Throwable t) {
+                    public void onFailure(@NonNull Call<UserInfo> call, Throwable t) {
                         userLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
     }
-
-
-    /*
-    public void getUserByUserId(int userId) {
-        try {
-            Response<UserInfo> response = apiService.getUserByUserId(userId).execute();
-            if (response.body() != null) {
-                userLiveData.postValue(response.body());
-                Log.i("success", "success");
-            } else {
-                userLiveData.postValue(null);
-                Log.i("fail", "fail");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
 
     /**

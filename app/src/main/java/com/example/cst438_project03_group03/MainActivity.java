@@ -3,6 +3,8 @@ package com.example.cst438_project03_group03;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -16,6 +18,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.util.Constants;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 /**
  * Class: MainActivity.java
@@ -31,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences mSharedPrefs;
 
+    private GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInAccount mGoogleSignInAccount;
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -43,16 +54,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ApplicationInfo ai = null;
-        try {
-            ai = getApplicationContext().getPackageManager().getApplicationInfo(getApplicationContext().getPackageName(), PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        assert ai != null;
-        String key = ai.metaData.getString("com.google.android.geo.CLIENT_ID");
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
-        Toast.makeText(getApplicationContext(), key + "", Toast.LENGTH_SHORT).show();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
         mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
@@ -61,6 +67,13 @@ public class MainActivity extends AppCompatActivity {
         makePostButton = findViewById(R.id.makePostButton);
         viewPostsButton = findViewById(R.id.viewPostsButton);
 
+        setOnClickListeners();
+    }
+
+    private void setOnClickListeners() {
+        /**
+         * Logs out the user.
+         */
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,12 +82,23 @@ public class MainActivity extends AppCompatActivity {
                     editor.putInt(Constants.USER_ID_KEY, -1);
                     editor.apply();
                 }
-                Toast.makeText(getApplicationContext(), "Logout Successful.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
+
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getApplicationContext(), "Logout Successful.", Toast.LENGTH_SHORT).show();
+
+                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        });
             }
         });
 
+        /**
+         * Button to allow users to create a new post.
+         */
         makePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /**
+         * Takes users to the live feed of posts.
+         */
         viewPostsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

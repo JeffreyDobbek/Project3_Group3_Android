@@ -45,50 +45,53 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = posts.get(position);
 
-        post.setUsername(users.get(post.getUserId()).getUsername());
-
-        if (users.get(post.getUserId()).getImage() != null) {
-            post.setProfilePic(users.get(post.getUserId()).getImage());
-        }
-        post.setImages(images.get(post.getPostId()));
+        int lastOrder = 0;
 
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
                     .replace("http://", "https://");
 
+            holder.profilePic.setVisibility(View.VISIBLE);
             Glide.with(holder.itemView)
                     .load(imageUrl)
                     .into(holder.profilePic);
+        } else {
+            holder.profilePic.setVisibility(View.INVISIBLE);
         }
 
         if (post.getUsername() != null) {
             holder.username.setText(post.getUsername());
+        } else {
+            holder.username.setText("");
         }
 
         if (post.getImages() != null) {
-            for (ImageInfo image : post.getImages()) {
-                if (image != null) {
-                    String imageUrl = image.getImage()
-                            .replace("http://", "https://");
+            Glide.with(holder.itemView)
+                    .load(post.getImages().get(0).getImage())
+                    .into(holder.image1);
 
-                    if (image.getOrders() == 1) {
-                        Glide.with(holder.itemView)
-                                .load(imageUrl)
-                                .into(holder.image1);
-                    } else if (image.getOrders() == 2) {
-                        Glide.with(holder.itemView)
-                                .load(imageUrl)
-                                .into(holder.image2);
-                    } else if (image.getOrders() == 3) {
-                        Glide.with(holder.itemView)
-                                .load(imageUrl)
-                                .into(holder.image3);
-                    } else if (image.getOrders() == 4) {
-                        Glide.with(holder.itemView)
-                                .load(imageUrl)
-                                .into(holder.image4);
-                    }
-                }
+            Glide.with(holder.itemView)
+                    .load(post.getImages().get(1).getImage())
+                    .into(holder.image2);
+
+            if (post.getImages().size() >= 3) {
+                holder.image3.setVisibility(View.VISIBLE);
+
+                Glide.with(holder.itemView)
+                        .load(post.getImages().get(2).getImage())
+                        .into(holder.image3);
+            } else {
+                holder.image3.setVisibility(View.GONE);
+            }
+
+            if (post.getImages().size() == 4) {
+                holder.image4.setVisibility(View.VISIBLE);
+
+                Glide.with(holder.itemView)
+                        .load(post.getImages().get(3).getImage())
+                        .into(holder.image4);
+            } else {
+                holder.image4.setVisibility(View.GONE);
             }
         }
 
@@ -116,6 +119,19 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     public void setImages(HashMap<Integer, List<ImageInfo>> images) {
         this.images = images;
+        setRecyclerData();
+    }
+
+    private void setRecyclerData() {
+        for (PostInfo post : posts) {
+            post.setUsername(users.get(post.getUserId()).getUsername());
+
+            if (users.get(post.getUserId()).getImage() != null) {
+                post.setProfilePic(users.get(post.getUserId()).getImage());
+            }
+
+            post.setImages(images.get(post.getPostId()));
+        }
         notifyDataSetChanged();
     }
 

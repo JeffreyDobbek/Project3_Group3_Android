@@ -16,6 +16,15 @@
         android:theme="@style/Theme.CST438_Project03_Group03"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeNameAndUsernameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangeEmailActivity"
+            android:exported="false" />
+        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity

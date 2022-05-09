@@ -76,6 +76,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/post_item_images_ll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -88,6 +89,7 @@
                 android:layout_weight="1"
                 android:background="#c0c0c0"
                 android:scaleType="center"
+                android:visibility="gone"
                 android:src="@drawable/ic_image" />
 
             <ImageView
@@ -97,6 +99,7 @@
                 android:layout_weight="1"
                 android:background="#c0c0c0"
                 android:scaleType="center"
+                android:visibility="gone"
                 android:src="@drawable/ic_image" />
         </LinearLayout>
 

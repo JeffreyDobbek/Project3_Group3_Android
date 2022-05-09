@@ -76,6 +76,7 @@ public class LiveFeedActivity extends AppCompatActivity {
         mUserViewModel.getUserListLiveData().observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(List<UserInfo> users) {
+                mUserMap.clear();
                 if (users != null) {
                     for (UserInfo user : users) {
                         mUserMap.put(user.getUserId(), user);
@@ -93,6 +94,7 @@ public class LiveFeedActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<ImageInfo> images) {
                 if (images != null) {
+                    mImageMap.clear();
                     for (ImageInfo image : images) {
                         if (!mImageMap.containsKey(image.getPostId())) {
                             mImageMap.put(image.getPostId(), new ArrayList<>());
