@@ -63,14 +63,14 @@ public class PostActivity extends AppCompatActivity {
 
 
 
-        mImageViewModel.getImgurResponseLiveData().observe(getViewLifecycleOwner(), new Observer<ImgurResponse>() {
+        mImageViewModel.getImgurResponseLiveData().observe(this, new Observer<ImgurResponse>() {
             @Override
             public void onChanged(ImgurResponse imgurResponse) {
                 if (imgurResponse != null) {
                     mPic = imgurResponse.getData().getLink();
 
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });

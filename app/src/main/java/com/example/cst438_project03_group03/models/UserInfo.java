@@ -9,6 +9,7 @@ public class UserInfo {
 
     @SerializedName("userId")
     @Expose
+    @PrimaryKey
     private int userId;
 
     @SerializedName("username")

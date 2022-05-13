@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * Class: AppDatabase.java
  * Description: Allows access to an instance of the Room database and singletons of the DAOs.
  */
-@Database(entities = {User.class, Post.class, Option.class, Image.class, Comment.class}, version = 2, exportSchema = false)
+@Database(entities = {User.class, Post.class, Image.class, Comment.class}, version = 2, exportSchema = false)
 @TypeConverters(ArrayListConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -30,7 +30,6 @@ public abstract class AppDatabase extends RoomDatabase {
     //public abstract UserDao getDao();
     public abstract PostDao postDao();
     public abstract ImageDao imageDao();
-    public abstract OptionDao optionDao();
     public abstract CommentDao commentDao();
 
     /**

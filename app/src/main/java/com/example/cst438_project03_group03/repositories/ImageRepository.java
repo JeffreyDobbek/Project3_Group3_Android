@@ -58,29 +58,6 @@ public class ImageRepository {
                 .create(ImgurApiService.class);
     }
 
-    /**
-     * Gets all images of a post by the post's id.
-     * @param postId The post's unique id.
-     */
-    public void getPostImages(int postId) {
-        apiService.getPicsByPostId(postId)
-                .enqueue(new Callback<List<ImageInfo>>() {
-                    @Override
-                    public void onResponse(Call<List<ImageInfo>> call, Response<List<ImageInfo>> response) {
-                        if (response.body() != null) {
-                            postImagesLiveData.postValue(response.body());
-                            Log.i("success", "success");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<ImageInfo>> call, Throwable t) {
-                        postImagesLiveData.postValue(null);
-                        Log.i("fail", "fail");
-                    }
-                });
-    }
-
     public void getAllPostPics() {
         apiService.getAllPostPics()
                 .enqueue(new Callback<List<ImageInfo>>() {

@@ -35,9 +35,6 @@ public class ImageViewModel extends AndroidViewModel {
         imgurResponseLiveData = imageRepository.getImgurResponseLiveData();
     }
 
-    public void getImages(int postId) {
-        imageRepository.getPostImages(postId);
-    }
     public void getAllPostPics() {
         imageRepository.getAllPostPics();
     }

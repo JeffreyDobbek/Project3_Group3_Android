@@ -60,29 +60,12 @@ public class PostRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<PostInfo>> call, @NonNull Throwable t) {
                         allLivePostsLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
     }
-
-
-    /*
-    public void getAllLivePosts() {
-        try {
-            Response<List<PostInfo>> response = apiService.getAllLivePosts().execute();
-
-            if (response.body() != null) {
-                allLivePostsLiveData.postValue(response.body());
-            } else {
-                allLivePostsLiveData.postValue(null);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
 
     /**

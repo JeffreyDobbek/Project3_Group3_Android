@@ -44,7 +44,7 @@ public class LiveFeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_live_feed);
 
         mSwipeRefreshLayout = findViewById(R.id.live_posts_refresh);
-        mAdapter = new PostResultsAdapter();
+        mAdapter = new PostResultsAdapter(this);
 
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mUserViewModel.init();

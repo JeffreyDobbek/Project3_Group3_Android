@@ -51,14 +51,12 @@ public class PostInfo {
     public PostInfo() {
     }
 
-    public PostInfo(int userId, String caption, int numLikes, int numComments, char isLive, String type) {
-        this.postId = postId;
+    public PostInfo(int userId, String caption, int numLikes, int numComments, char isLive) {
         this.userId = userId;
         this.caption = caption;
         this.numLikes = numLikes;
         this.numComments = numComments;
         this.isLive = isLive;
-        this.type = type;
     }
 
     public int getPostId() {

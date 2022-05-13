@@ -1,8 +1,11 @@
 package com.example.cst438_project03_group03.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.cst438_project03_group03.R;
+import com.example.cst438_project03_group03.ViewCommentsActivity;
 import com.example.cst438_project03_group03.database.Post;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.PostInfo;
@@ -28,6 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.PostResultsHolder> {
 
+    private Context context;
     private List<PostInfo> posts = new ArrayList<>();
     private HashMap<Integer, UserInfo> users = new HashMap<>();
     private HashMap<Integer, List<ImageInfo>> images = new HashMap<>();
@@ -39,6 +44,10 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
                 .inflate(R.layout.post_item, parent, false);
 
         return new PostResultsHolder(itemView);
+    }
+
+    public PostResultsAdapter(Context context) {
+        this.context = context;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
             holder.username.setText("");
         }
 
-        if (post.getImages() != null) {
+        if (!post.getImages().isEmpty()) {
             Glide.with(holder.itemView)
                     .load(post.getImages().get(0).getImage())
                     .into(holder.image1);
@@ -102,6 +111,15 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         if (post.getNumComments() > 0) {
             holder.numComments.setText(post.getNumComments());
         }
+
+        holder.viewAllCommentsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context.getApplicationContext(), ViewCommentsActivity.class);
+                intent.putExtra("postId", post.getPostId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -111,6 +129,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     public void setPosts(List<PostInfo> posts) {
         this.posts = posts;
+        notifyDataSetChanged();
     }
 
     public void setUsers(HashMap<Integer, UserInfo> users) {
@@ -145,6 +164,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         private TextView username;
         private TextView caption;
         private TextView numComments;
+        private Button viewAllCommentsBtn;
 
         public PostResultsHolder(@NonNull View itemView) {
             super(itemView);
@@ -157,6 +177,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
             username = itemView.findViewById(R.id.live_feed_post_username);
             caption = itemView.findViewById(R.id.live_feed_post_caption);
             numComments = itemView.findViewById(R.id.live_feed_num_comments);
+            viewAllCommentsBtn = itemView.findViewById(R.id.view_all_comments_button);
         }
     }
 }
