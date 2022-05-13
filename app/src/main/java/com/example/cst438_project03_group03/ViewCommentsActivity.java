@@ -7,17 +7,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.cst438_project03_group03.adapters.CommentsAdapter;
 import com.example.cst438_project03_group03.databinding.ActivityChangeEmailBinding;
 import com.example.cst438_project03_group03.databinding.ActivityViewCommentsBinding;
 import com.example.cst438_project03_group03.models.CommentInfo;
 import com.example.cst438_project03_group03.models.UserInfo;
+import com.example.cst438_project03_group03.util.Constants;
 import com.example.cst438_project03_group03.viewmodels.CommentViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
@@ -35,6 +38,8 @@ public class ViewCommentsActivity extends AppCompatActivity {
     private int mPostId;
 
     private ActivityViewCommentsBinding mBinding;
+
+    private SharedPreferences mSharedPrefs;
 
     private ImageView mCloseIv;
     private ImageView mUploadIv;
@@ -64,6 +69,10 @@ public class ViewCommentsActivity extends AppCompatActivity {
 
         wireUpDisplay();
         setOnClickListeners();
+
+        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+        String profilePic = mSharedPrefs.getString(Constants.USER_PROFILE_PIC_KEY, null);
+        setProfilePic(profilePic);
 
         mSwipeRefreshLayout = findViewById(R.id.comments_refresh);
         mAdapter = new CommentsAdapter(this);
@@ -144,5 +153,13 @@ public class ViewCommentsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void setProfilePic(String profilePic) {
+        if (profilePic != null) {
+            Glide.with(mBinding.getRoot().getRootView())
+                    .load(profilePic)
+                    .into(mBinding.commentMyProfilePicCiv);
+        }
     }
 }

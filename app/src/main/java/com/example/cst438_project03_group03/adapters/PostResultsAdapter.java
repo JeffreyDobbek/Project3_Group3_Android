@@ -107,7 +107,9 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         }
 
         if (post.getNumComments() > 0) {
-            holder.numComments.setText(post.getNumComments());
+            holder.numComments.setText(post.getNumComments() + "");
+        } else {
+            holder.numComments.setText("0");
         }
 
         holder.viewAllCommentsBtn.setOnClickListener(new View.OnClickListener() {

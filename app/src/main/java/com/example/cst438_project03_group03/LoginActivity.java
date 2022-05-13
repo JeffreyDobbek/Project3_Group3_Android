@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUserText, mPasswordText;
 
     private UserDao userDao;
+    private UserInfo mNewUser;
     private List<UserInfo> mUsers = new ArrayList<>();
 
     private UserViewModel mViewModel;
@@ -61,8 +62,10 @@ public class LoginActivity extends AppCompatActivity {
     private String adminUsername = "admin";
     private String adminPassword = "admin";
 
+    private String mName;
     private String mUsername;
     private String mPassword;
+    private String mProfilePic;
 
     private int mUserId;
 
@@ -96,6 +99,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(UserInfo user) {
                 SharedPreferences.Editor editor = mSharedPrefs.edit();
                 editor.putInt(Constants.USER_ID_KEY, user.getUserId());
+                editor.putString(Constants.USER_NAME_KEY, user.getName());
+                editor.putString(Constants.USER_USERNAME_KEY, user.getUsername());
+                editor.putString(Constants.USER_PROFILE_PIC_KEY, user.getImage());
                 editor.apply();
 
                 Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
@@ -117,6 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (createAccountResult != null) {
                     SharedPreferences.Editor editor = mSharedPrefs.edit();
                     editor.putInt(Constants.USER_ID_KEY, createAccountResult.getNewId());
+                    editor.putString(Constants.USER_NAME_KEY, mNewUser.getName());
+                    editor.putString(Constants.USER_USERNAME_KEY, mNewUser.getUsername());
+                    editor.putString(Constants.USER_PROFILE_PIC_KEY, mNewUser.getPic());
                     editor.apply();
 
                     Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
@@ -249,22 +258,25 @@ public class LoginActivity extends AppCompatActivity {
             if (checkIfRegistered(account)) {
                 SharedPreferences.Editor editor = mSharedPrefs.edit();
                 editor.putInt(Constants.USER_ID_KEY, mUserId);
+                editor.putString(Constants.USER_NAME_KEY, mName);
+                editor.putString(Constants.USER_USERNAME_KEY, mUsername);
+                editor.putString(Constants.USER_PROFILE_PIC_KEY, mProfilePic);
                 editor.apply();
 
                 Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             } else {
-                UserInfo newUser = new UserInfo();
-                newUser.setUsername(account.getDisplayName());
-                newUser.setEmail(account.getEmail());
-                newUser.setName(account.getDisplayName());
-                newUser.setPassword(account.getId());
+                mNewUser = new UserInfo();
+                mNewUser.setUsername(account.getDisplayName());
+                mNewUser.setEmail(account.getEmail());
+                mNewUser.setName(account.getDisplayName());
+                mNewUser.setPassword(account.getId());
 
                 if (account.getPhotoUrl() != null) {
-                    newUser.setPic(account.getPhotoUrl().toString());
+                    mNewUser.setPic(account.getPhotoUrl().toString());
                 }
-                mViewModel.createUser(newUser);
+                mViewModel.createUser(mNewUser);
             }
 
         } catch (ApiException e) {
@@ -276,6 +288,9 @@ public class LoginActivity extends AppCompatActivity {
         for (UserInfo user : mUsers) {
             if (user.getEmail().equals(account.getEmail())) {
                 mUserId = user.getUserId();
+                mName = user.getName();
+                mUsername = user.getUsername();
+                mProfilePic = user.getImage();
                 return true;
             }
         }

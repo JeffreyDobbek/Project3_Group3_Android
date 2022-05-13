@@ -7,5 +7,7 @@ public class Constants {
     public static final String IMGUR_API_SERVICE_BASE_URL = "https://api.imgur.com/";
     public static final String SHARED_PREF_NAME = "user login";
     public static final String USER_ID_KEY = "user id key";
-    // public static final String IMGUR_CLIENT_ID =
+    public static final String USER_PROFILE_PIC_KEY = "user profile pic key";
+    public static final String USER_NAME_KEY = "user name key";
+    public static final String USER_USERNAME_KEY = "user username key";
 }
