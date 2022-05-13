@@ -54,8 +54,6 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = posts.get(position);
 
-        int lastOrder = 0;
-
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
                     .replace("http://", "https://");
@@ -65,7 +63,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
                     .load(imageUrl)
                     .into(holder.profilePic);
         } else {
-            holder.profilePic.setVisibility(View.INVISIBLE);
+            holder.profilePic.setImageResource(R.mipmap.ic_blank_profile_pic);
         }
 
         if (post.getUsername() != null) {

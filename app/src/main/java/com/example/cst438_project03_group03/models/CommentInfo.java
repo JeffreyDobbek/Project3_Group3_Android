@@ -28,6 +28,12 @@ public class CommentInfo {
     @Expose
     private int numLikes;
 
+    @Expose(serialize = false)
+    private String profilePic;
+
+    @Expose(serialize = false)
+    private String username;
+
     public int getCommentId() {
         return commentId;
     }
@@ -66,5 +72,21 @@ public class CommentInfo {
 
     public void setNumLikes(int numLikes) {
         this.numLikes = numLikes;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
