@@ -117,6 +117,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         holder.image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intent.putExtra("imageId", post.getImages().get(0).getImageId());
                 intent.putExtra("image", post.getImages().get(0).getImage());
                 intent.putExtra("numLikes", post.getImages().get(0).getNumLikes());
                 context.startActivity(intent);
@@ -126,6 +127,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         holder.image2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intent.putExtra("imageId", post.getImages().get(1).getImageId());
                 intent.putExtra("image", post.getImages().get(1).getImage());
                 intent.putExtra("numLikes", post.getImages().get(1).getNumLikes());
                 context.startActivity(intent);
@@ -136,6 +138,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
             @Override
             public void onClick(View v) {
                 if (post.getImages().size() >= 3) {
+                    intent.putExtra("imageId", post.getImages().get(2).getImageId());
                     intent.putExtra("image", post.getImages().get(2).getImage());
                     intent.putExtra("numLikes", post.getImages().get(2).getNumLikes());
                     context.startActivity(intent);
@@ -147,6 +150,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
             @Override
             public void onClick(View v) {
                 if (post.getImages().size() == 4) {
+                    intent.putExtra("imageId", post.getImages().get(3).getImageId());
                     intent.putExtra("image", post.getImages().get(3).getImage());
                     intent.putExtra("numLikes", post.getImages().get(3).getNumLikes());
                     context.startActivity(intent);

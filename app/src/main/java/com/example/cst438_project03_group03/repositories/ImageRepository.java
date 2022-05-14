@@ -2,6 +2,7 @@ package com.example.cst438_project03_group03.repositories;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -12,6 +13,7 @@ import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
+import com.example.cst438_project03_group03.models.IsPicLikedResponse;
 import com.example.cst438_project03_group03.util.Constants;
 
 import java.security.spec.ECField;
@@ -31,6 +33,7 @@ public class ImageRepository {
     private final ImgurApiService imgurApiService;
     private final MutableLiveData<List<ImageInfo>> postImagesLiveData;
     private final MutableLiveData<ImgurResponse> imgurResponseLiveData;
+    private final MutableLiveData<IsPicLikedResponse> isPicLikedResponseLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
@@ -38,6 +41,7 @@ public class ImageRepository {
     public ImageRepository() {
         postImagesLiveData = new MutableLiveData<>();
         imgurResponseLiveData = new MutableLiveData<>();
+        isPicLikedResponseLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -62,7 +66,7 @@ public class ImageRepository {
         apiService.getAllPostPics()
                 .enqueue(new Callback<List<ImageInfo>>() {
                     @Override
-                    public void onResponse(Call<List<ImageInfo>> call, Response<List<ImageInfo>> response) {
+                    public void onResponse(@NonNull Call<List<ImageInfo>> call, @NonNull Response<List<ImageInfo>> response) {
                         if (response.body() != null) {
                             postImagesLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -70,8 +74,27 @@ public class ImageRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<List<ImageInfo>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<ImageInfo>> call, @NonNull Throwable t) {
                         postImagesLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
+    public void isPicLiked(int userId, int imageId) {
+        apiService.isPicLiked(userId, imageId)
+                .enqueue(new Callback<IsPicLikedResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<IsPicLikedResponse> call, @NonNull Response<IsPicLikedResponse> response) {
+                        if (response.body() != null) {
+                            isPicLikedResponseLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<IsPicLikedResponse> call, @NonNull Throwable t) {
+                        isPicLikedResponseLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
@@ -81,7 +104,7 @@ public class ImageRepository {
         imgurApiService.imgurUpload(imgurUpload, clientId)
                 .enqueue(new Callback<ImgurResponse>() {
                     @Override
-                    public void onResponse(Call<ImgurResponse> call, Response<ImgurResponse> response) {
+                    public void onResponse(@NonNull Call<ImgurResponse> call, @NonNull Response<ImgurResponse> response) {
                         if (response.body() != null) {
                             imgurResponseLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -89,20 +112,20 @@ public class ImageRepository {
                     }
 
                     @Override
-                    public void onFailure(Call<ImgurResponse> call, Throwable t) {
+                    public void onFailure(@NonNull Call<ImgurResponse> call, @NonNull Throwable t) {
                         imgurResponseLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
     }
 
-    /**
-     * @return LiveData of post images response.
-     */
     public LiveData<List<ImageInfo>> getPostImagesLiveData() {
         return postImagesLiveData;
     }
     public LiveData<ImgurResponse> getImgurResponseLiveData() {
         return imgurResponseLiveData;
+    }
+    public LiveData<IsPicLikedResponse> getIsPicLikedResponseLiveData() {
+        return isPicLikedResponseLiveData;
     }
 }
