@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,10 +20,12 @@ import com.example.cst438_project03_group03.adapters.CommentsAdapter;
 import com.example.cst438_project03_group03.databinding.ActivityChangeEmailBinding;
 import com.example.cst438_project03_group03.databinding.ActivityViewCommentsBinding;
 import com.example.cst438_project03_group03.models.CommentInfo;
+import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.util.Constants;
 import com.example.cst438_project03_group03.viewmodels.CommentViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +34,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Class: ViewCommentsActivity.java
- * Description:
+ * Description: Holds a post's comments and ability to post a comment.
  */
 public class ViewCommentsActivity extends AppCompatActivity {
-
-    private int mPostId;
 
     private ActivityViewCommentsBinding mBinding;
 
@@ -54,6 +55,13 @@ public class ViewCommentsActivity extends AppCompatActivity {
     private CommentsAdapter mAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private int mPostId;
+    private int mUserId;
+
+    private String mComment;
+
+    private CommentInfo mCommentInfo;
 
     private HashMap<Integer, UserInfo> mUserMap = new HashMap<>();
 
@@ -81,12 +89,14 @@ public class ViewCommentsActivity extends AppCompatActivity {
         setUserViewModel();
 
         mPostId = getIntent().getIntExtra("postId", -1);
-
-        mCommentViewModel.getPostComments(mPostId);
+        mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
 
         RecyclerView recyclerView = findViewById(R.id.comments_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout.setRefreshing(true);
+        mCommentViewModel.getPostComments(mPostId);
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -114,7 +124,24 @@ public class ViewCommentsActivity extends AppCompatActivity {
         mUploadIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mComment = mCommentEt.getText().toString();
+                if (!mComment.isEmpty()) {
+                    if (mComment.length() <= 255) {
+                        mCommentInfo = new CommentInfo();
 
+                        mCommentInfo.setPostId(mPostId);
+                        mCommentInfo.setUserId(mUserId);
+                        mCommentInfo.setComment(mComment);
+
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        mCommentViewModel.uploadComment(mCommentInfo);
+                        mCommentEt.setText("");
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Comment can't be more than 255 characters.", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please enter a comment.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -131,6 +158,19 @@ public class ViewCommentsActivity extends AppCompatActivity {
                     mUserViewModel.getAllUsers();
                 } else {
                     Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        mCommentViewModel.getUploadCommentResponseLiveData().observe(this, new Observer<UploadCommentResponse>() {
+            @Override
+            public void onChanged(UploadCommentResponse response) {
+                if (response != null) {
+                    Log.i("comment uploaded", response.getCommentId() + "");
+                    mCommentViewModel.getPostComments(mPostId);
+                } else {
+                    Snackbar.make(mBinding.view, "An error occurred", Snackbar.LENGTH_SHORT).show();
+                    Log.i("ERROR", "comment failed to upload");
                 }
             }
         });

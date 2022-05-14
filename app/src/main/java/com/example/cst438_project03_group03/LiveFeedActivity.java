@@ -107,14 +107,15 @@ public class LiveFeedActivity extends AppCompatActivity {
             }
         });
 
-        mPostViewModel.getAllLivePosts();
-
         /**
          * Setting up post recycler view
          */
         RecyclerView recyclerView = findViewById(R.id.live_feed_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mAdapter);
+
+        mSwipeRefreshLayout.setRefreshing(true);
+        mPostViewModel.getAllLivePosts();
 
         /**
          * Swipe down to refresh the live post feed.

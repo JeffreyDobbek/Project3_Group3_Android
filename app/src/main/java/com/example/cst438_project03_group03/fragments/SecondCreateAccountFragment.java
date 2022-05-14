@@ -2,7 +2,6 @@ package com.example.cst438_project03_group03.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 import com.example.cst438_project03_group03.BuildConfig;
 import com.example.cst438_project03_group03.LoginActivity;
 import com.example.cst438_project03_group03.databinding.FragmentSecondCreateAccountBinding;
-import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.UserInfo;
@@ -33,8 +32,6 @@ import com.example.cst438_project03_group03.viewmodels.ImageViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -125,9 +122,9 @@ public class SecondCreateAccountFragment extends Fragment {
         /**
          * Post request to save a user to the database.
          */
-        mUserViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResult>() {
+        mUserViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResponse>() {
             @Override
-            public void onChanged(CreateAccountResult response) {
+            public void onChanged(CreateAccountResponse response) {
                 if (response != null) {
                     Toast.makeText(getContext().getApplicationContext(), "Account Successfully Created.", Toast.LENGTH_SHORT).show();
                     Log.i("newId", response.getNewId() + "");

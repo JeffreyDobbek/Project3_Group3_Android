@@ -1,20 +1,16 @@
 package com.example.cst438_project03_group03.api;
 
-import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CommentInfo;
-import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.PostInfo;
+import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 
 import java.util.List;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -57,7 +53,7 @@ public interface ApiService {
      * @return
      */
     @POST("api/signUp")
-    Call<CreateAccountResult> createUser(@Body UserInfo userInfo);
+    Call<CreateAccountResponse> createUser(@Body UserInfo userInfo);
 
     /**
      * API request to get all live posts.
@@ -72,6 +68,14 @@ public interface ApiService {
      */
     @GET("api/getAllPostPics")
     Call<List<ImageInfo>> getAllPostPics();
+
+    /**
+     * API request to post a comment on a post.
+     * @param commentInfo A CommentInfo object.
+     * @return the new comment's id.
+     */
+    @POST("api/uploadComment")
+    Call<UploadCommentResponse> uploadComment(@Body CommentInfo commentInfo);
 
     /**
      * API request to get all of a post's comments.
