@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.example.cst438_project03_group03.ImageActivity;
@@ -55,6 +56,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = posts.get(position);
         Intent intent = new Intent(context, ImageActivity.class);
+        ImagesPagerAdapter adapter;
 
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
@@ -75,33 +77,25 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         }
 
         if (!post.getImages().isEmpty()) {
-            Glide.with(holder.itemView)
-                    .load(post.getImages().get(0).getImage())
-                    .into(holder.image1);
+            adapter = new ImagesPagerAdapter(context, post.getImages());
+            holder.viewPager.setAdapter(adapter);
 
-            Glide.with(holder.itemView)
-                    .load(post.getImages().get(1).getImage())
-                    .into(holder.image2);
+            holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-            if (post.getImages().size() >= 3) {
-                holder.image3.setVisibility(View.VISIBLE);
+                }
 
-                Glide.with(holder.itemView)
-                        .load(post.getImages().get(2).getImage())
-                        .into(holder.image3);
-            } else {
-                holder.image3.setVisibility(View.GONE);
-            }
+                @Override
+                public void onPageSelected(int position) {
 
-            if (post.getImages().size() == 4) {
-                holder.image4.setVisibility(View.VISIBLE);
+                }
 
-                Glide.with(holder.itemView)
-                        .load(post.getImages().get(3).getImage())
-                        .into(holder.image4);
-            } else {
-                holder.image4.setVisibility(View.GONE);
-            }
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
         }
 
         if (post.getCaption() != null) {
@@ -113,50 +107,6 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         } else {
             holder.numComments.setText("0");
         }
-
-        holder.image1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("imageId", post.getImages().get(0).getImageId());
-                intent.putExtra("image", post.getImages().get(0).getImage());
-                intent.putExtra("numLikes", post.getImages().get(0).getNumLikes());
-                context.startActivity(intent);
-            }
-        });
-
-        holder.image2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent.putExtra("imageId", post.getImages().get(1).getImageId());
-                intent.putExtra("image", post.getImages().get(1).getImage());
-                intent.putExtra("numLikes", post.getImages().get(1).getNumLikes());
-                context.startActivity(intent);
-            }
-        });
-
-        holder.image3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (post.getImages().size() >= 3) {
-                    intent.putExtra("imageId", post.getImages().get(2).getImageId());
-                    intent.putExtra("image", post.getImages().get(2).getImage());
-                    intent.putExtra("numLikes", post.getImages().get(2).getNumLikes());
-                    context.startActivity(intent);
-                }
-            }
-        });
-
-        holder.image4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (post.getImages().size() == 4) {
-                    intent.putExtra("imageId", post.getImages().get(3).getImageId());
-                    intent.putExtra("image", post.getImages().get(3).getImage());
-                    intent.putExtra("numLikes", post.getImages().get(3).getNumLikes());
-                    context.startActivity(intent);
-                }
-            }
-        });
 
         holder.viewAllCommentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,27 +153,21 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     public class PostResultsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView profilePic;
-        private ImageView image1;
-        private ImageView image2;
-        private ImageView image3;
-        private ImageView image4;
         private TextView username;
         private TextView caption;
         private TextView numComments;
         private Button viewAllCommentsBtn;
+        private ViewPager viewPager;
 
         public PostResultsHolder(@NonNull View itemView) {
             super(itemView);
 
             profilePic = itemView.findViewById(R.id.live_feed_profile_pic);
-            image1 = itemView.findViewById(R.id.live_feed_image1);
-            image2 = itemView.findViewById(R.id.live_feed_image2);
-            image3 = itemView.findViewById(R.id.live_feed_image3);
-            image4 = itemView.findViewById(R.id.live_feed_image4);
             username = itemView.findViewById(R.id.live_feed_post_username);
             caption = itemView.findViewById(R.id.live_feed_post_caption);
             numComments = itemView.findViewById(R.id.live_feed_num_comments);
             viewAllCommentsBtn = itemView.findViewById(R.id.view_all_comments_button);
+            viewPager = itemView.findViewById(R.id.live_feed_vp);
         }
     }
 }
