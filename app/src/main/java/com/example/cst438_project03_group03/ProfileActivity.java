@@ -55,6 +55,9 @@ public class ProfileActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     private int mUserId;
+    private String mName;
+    private String mUsername;
+    private String mProfilePic;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,14 +85,17 @@ public class ProfileActivity extends AppCompatActivity {
         TabLayout tabs = binding.tabs;
         tabs.setupWithViewPager(viewPager);
 
-        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
-        mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
-
         wireUpDisplay();
         setOnClickListeners();
         setUserViewModel();
 
-        mUserViewModel.getUserByUserId(mUserId);
+        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+        mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
+        mName = mSharedPrefs.getString(Constants.USER_NAME_KEY, null);
+        mUsername = mSharedPrefs.getString(Constants.USER_USERNAME_KEY, null);
+        mProfilePic = mSharedPrefs.getString(Constants.USER_PROFILE_PIC_KEY, null);
+
+        setUserInfo(mName, mUsername, mProfilePic);
     }
 
     /**
@@ -159,17 +165,6 @@ public class ProfileActivity extends AppCompatActivity {
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mUserViewModel.init();
-
-        mUserViewModel.getUserLiveData().observe(this, new Observer<UserInfo>() {
-            @Override
-            public void onChanged(UserInfo userInfo) {
-                if (userInfo != null) {
-                    setUserInfo(userInfo.getName(), userInfo.getUsername(), userInfo.getImage());
-                } else {
-                    Toast.makeText(getApplicationContext(), mUserId + "", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     /**

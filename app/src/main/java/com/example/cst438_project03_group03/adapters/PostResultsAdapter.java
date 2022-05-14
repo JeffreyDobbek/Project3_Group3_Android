@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.cst438_project03_group03.ImageActivity;
 import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.ViewCommentsActivity;
 import com.example.cst438_project03_group03.database.Post;
@@ -53,6 +54,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     @Override
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = posts.get(position);
+        Intent intent = new Intent(context, ImageActivity.class);
 
         if (post.getProfilePic() != null) {
             String imageUrl = post.getProfilePic()
@@ -111,6 +113,46 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         } else {
             holder.numComments.setText("0");
         }
+
+        holder.image1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("image", post.getImages().get(0).getImage());
+                intent.putExtra("numLikes", post.getImages().get(0).getNumLikes());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.image2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("image", post.getImages().get(1).getImage());
+                intent.putExtra("numLikes", post.getImages().get(1).getNumLikes());
+                context.startActivity(intent);
+            }
+        });
+
+        holder.image3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (post.getImages().size() >= 3) {
+                    intent.putExtra("image", post.getImages().get(2).getImage());
+                    intent.putExtra("numLikes", post.getImages().get(2).getNumLikes());
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+        holder.image4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (post.getImages().size() == 4) {
+                    intent.putExtra("image", post.getImages().get(3).getImage());
+                    intent.putExtra("numLikes", post.getImages().get(3).getNumLikes());
+                    context.startActivity(intent);
+                }
+            }
+        });
 
         holder.viewAllCommentsBtn.setOnClickListener(new View.OnClickListener() {
             @Override

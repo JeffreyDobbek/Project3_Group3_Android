@@ -94,6 +94,7 @@
             android:id="@+id/comment_et"
             android:layout_width="280dp"
             android:layout_height="match_parent"
+            android:hint="Enter your comment"
             android:layout_marginStart="10dp"/>
 
         <ImageView

@@ -22,7 +22,7 @@ public class ImageInfo {
 
     @SerializedName("numLikes")
     @Expose
-    private String numLikes;
+    private int numLikes;
 
     @SerializedName("orders")
     @Expose
@@ -31,7 +31,7 @@ public class ImageInfo {
     public ImageInfo() {
     }
 
-    public ImageInfo(int postId, String image, String numLikes, int orders) {
+    public ImageInfo(int postId, String image, int numLikes, int orders) {
         this.postId = postId;
         this.image = image;
         this.numLikes = numLikes;
@@ -62,11 +62,11 @@ public class ImageInfo {
         this.image = image;
     }
 
-    public String getNumLikes() {
+    public int getNumLikes() {
         return numLikes;
     }
 
-    public void setNumLikes(String numLikes) {
+    public void setNumLikes(int numLikes) {
         this.numLikes = numLikes;
     }
 
