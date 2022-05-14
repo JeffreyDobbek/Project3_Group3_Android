@@ -77,6 +77,8 @@ public class ViewCommentsActivity extends AppCompatActivity {
 
         wireUpDisplay();
         setOnClickListeners();
+        setCommentViewModel();
+        setUserViewModel();
 
         mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
         String profilePic = mSharedPrefs.getString(Constants.USER_PROFILE_PIC_KEY, null);
@@ -85,8 +87,6 @@ public class ViewCommentsActivity extends AppCompatActivity {
         mSwipeRefreshLayout = findViewById(R.id.comments_refresh);
         mAdapter = new CommentsAdapter(this);
 
-        setCommentViewModel();
-        setUserViewModel();
 
         mPostId = getIntent().getIntExtra("postId", -1);
         mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
@@ -98,6 +98,9 @@ public class ViewCommentsActivity extends AppCompatActivity {
         mSwipeRefreshLayout.setRefreshing(true);
         mCommentViewModel.getPostComments(mPostId);
 
+        /**
+         * Swipe to refresh comment Recycler View.
+         */
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -106,6 +109,9 @@ public class ViewCommentsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Wires up display elements.
+     */
     private void wireUpDisplay() {
         mCloseIv = mBinding.commentsCloseIv;
         mUploadIv = mBinding.commentsUploadIv;
@@ -113,7 +119,13 @@ public class ViewCommentsActivity extends AppCompatActivity {
         mCommentEt = mBinding.commentEt;
     }
 
+    /**
+     * Sets button listeners.
+     */
     private void setOnClickListeners() {
+        /**
+         * Closes the current activity.
+         */
         mCloseIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,10 +133,16 @@ public class ViewCommentsActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Attempts to upload a comment.
+         */
         mUploadIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mComment = mCommentEt.getText().toString();
+                /**
+                 * Comment is valid if it is not empty and is less than or equal to 255 characters.
+                 */
                 if (!mComment.isEmpty()) {
                     if (mComment.length() <= 255) {
                         mCommentInfo = new CommentInfo();
@@ -133,6 +151,9 @@ public class ViewCommentsActivity extends AppCompatActivity {
                         mCommentInfo.setUserId(mUserId);
                         mCommentInfo.setComment(mComment);
 
+                        /**
+                         * Retrieve comments again.
+                         */
                         mSwipeRefreshLayout.setRefreshing(true);
                         mCommentViewModel.uploadComment(mCommentInfo);
                         mCommentEt.setText("");
@@ -146,10 +167,16 @@ public class ViewCommentsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the comment view model and sets up live data observers.
+     */
     private void setCommentViewModel() {
         mCommentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
         mCommentViewModel.init();
 
+        /**
+         * Listens for request for all comments of selected post.
+         */
         mCommentViewModel.getCommentListLiveData().observe(this, new Observer<List<CommentInfo>>() {
             @Override
             public void onChanged(List<CommentInfo> comments) {
@@ -162,6 +189,9 @@ public class ViewCommentsActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Listens for upload comment response.
+         */
         mCommentViewModel.getUploadCommentResponseLiveData().observe(this, new Observer<UploadCommentResponse>() {
             @Override
             public void onChanged(UploadCommentResponse response) {
@@ -176,6 +206,9 @@ public class ViewCommentsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the user view model and sets up live data observers.
+     */
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mUserViewModel.init();
@@ -195,6 +228,10 @@ public class ViewCommentsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets profile picture of the logged in user.
+     * @param profilePic Image URL of the user's profile picture.
+     */
     private void setProfilePic(String profilePic) {
         if (profilePic != null) {
             Glide.with(mBinding.getRoot().getRootView())

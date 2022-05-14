@@ -3,17 +3,14 @@ package com.example.cst438_project03_group03;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.loader.content.AsyncTaskLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.adapters.PostResultsAdapter;
-import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.PostInfo;
 import com.example.cst438_project03_group03.models.UserInfo;
@@ -58,7 +55,7 @@ public class LiveFeedActivity extends AppCompatActivity {
         /**
          * Listens for request for all live posts in the database.
          */
-        mPostViewModel.getAllLivePostsLiveData().observe(this, new Observer<List<PostInfo>>() {
+        mPostViewModel.getPostListLiveData().observe(this, new Observer<List<PostInfo>>() {
             @Override
             public void onChanged(List<PostInfo> posts) {
                 if (posts != null) {

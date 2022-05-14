@@ -25,13 +25,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PostRepository {
 
     private final ApiService apiService;
-    private final MutableLiveData<List<PostInfo>> allLivePostsLiveData;
+    private final MutableLiveData<List<PostInfo>> postListLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
      */
     public PostRepository() {
-        allLivePostsLiveData = new MutableLiveData<>();
+        postListLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -54,24 +54,42 @@ public class PostRepository {
                     @Override
                     public void onResponse(@NonNull Call<List<PostInfo>> call, @NonNull Response<List<PostInfo>> response) {
                         if (response.body() != null) {
-                            allLivePostsLiveData.postValue(response.body());
+                            postListLiveData.postValue(response.body());
                             Log.i("success", "success");
                         }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<List<PostInfo>> call, @NonNull Throwable t) {
-                        allLivePostsLiveData.postValue(null);
+                        postListLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
+    }
+
+    public void getUserPosts(int userId) {
+        apiService.getUserPosts(userId).enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<PostInfo>> call, @NonNull Response<List<PostInfo>> response) {
+                if (response.body() != null) {
+                    postListLiveData.postValue(response.body());
+                    Log.i("success", "success");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<PostInfo>> call, @NonNull Throwable t) {
+                postListLiveData.postValue(null);
+                Log.i("fail", "fail");
+            }
+        });
     }
 
 
     /**
      * @return LiveData of all live posts response.
      */
-    public LiveData<List<PostInfo>> getAllLivePostsLiveData() {
-        return allLivePostsLiveData;
+    public LiveData<List<PostInfo>> getPostListLiveData() {
+        return postListLiveData;
     }
 }

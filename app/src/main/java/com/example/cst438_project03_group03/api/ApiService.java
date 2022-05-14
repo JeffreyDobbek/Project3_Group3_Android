@@ -63,6 +63,14 @@ public interface ApiService {
     Call<List<PostInfo>> getAllLivePosts();
 
     /**
+     * API request to get all of a user's posts.
+     * @param userId The user's id.
+     * @return a list of posts.
+     */
+    @GET("api/userPosts")
+    Call<List<PostInfo>> getUserPosts(@Query("userId") int userId);
+
+    /**
      * API request to get all pictures from the database.
      * @return a list of images.
      */

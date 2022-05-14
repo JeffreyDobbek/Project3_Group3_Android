@@ -143,12 +143,12 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
 
     private void setRecyclerData() {
         for (PostInfo post : posts) {
-            post.setUsername(users.get(post.getUserId()).getUsername());
-
-            if (users.get(post.getUserId()).getImage() != null) {
-                post.setProfilePic(users.get(post.getUserId()).getImage());
+            if (!users.isEmpty()) {
+                post.setUsername(users.get(post.getUserId()).getUsername());
+                if (users.get(post.getUserId()).getImage() != null) {
+                    post.setProfilePic(users.get(post.getUserId()).getImage());
+                }
             }
-
             post.setImages(images.get(post.getPostId()));
         }
         notifyDataSetChanged();

@@ -9,14 +9,14 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/live_posts_refresh"
+        android:id="@+id/my_posts_refresh"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/live_feed_recyclerview"
+            android:id="@+id/my_posts_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
