@@ -70,6 +70,9 @@ public class MyPostsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        /**
+         * Retrieve values from shared preferences.
+         */
         mSharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREF_NAME, Context.MODE_PRIVATE);
         mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
         mUsername = mSharedPrefs.getString(Constants.USER_USERNAME_KEY, null);
@@ -88,6 +91,9 @@ public class MyPostsFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(true);
         mPostViewModel.getUserPosts(mUserId);
 
+        /**
+         * Swipe down to refresh the user's post feed.
+         */
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -96,10 +102,16 @@ public class MyPostsFragment extends Fragment {
         });
     }
 
+    /**
+     * Initializes the post view model and sets up live data observers.
+     */
     private void setPostViewModel() {
         mPostViewModel = new ViewModelProvider(this).get(PostViewModel.class);
         mPostViewModel.init();
 
+        /**
+         * Listens for request for all of a user's posts.
+         */
         mPostViewModel.getPostListLiveData().observe(getViewLifecycleOwner(), new Observer<List<PostInfo>>() {
             @Override
             public void onChanged(List<PostInfo> posts) {
@@ -115,10 +127,16 @@ public class MyPostsFragment extends Fragment {
         });
     }
 
+    /**
+     * Initializes the image view model and sets up live data observers.
+     */
     private void setImageViewModel() {
         mImageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
         mImageViewModel.init();
 
+        /**
+         * Listens for request for all images in the database.
+         */
         mImageViewModel.getPostImagesLiveData().observe(getViewLifecycleOwner(), new Observer<List<ImageInfo>>() {
             @Override
             public void onChanged(List<ImageInfo> images) {
