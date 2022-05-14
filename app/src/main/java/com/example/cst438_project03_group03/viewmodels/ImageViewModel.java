@@ -13,6 +13,7 @@ import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.IsPicLikedResponse;
+import com.example.cst438_project03_group03.models.LikePicResponse;
 import com.example.cst438_project03_group03.repositories.CommentRepository;
 import com.example.cst438_project03_group03.repositories.ImageRepository;
 import com.example.cst438_project03_group03.repositories.UserRepository;
@@ -29,6 +30,7 @@ public class ImageViewModel extends AndroidViewModel {
     private LiveData<List<ImageInfo>> postImagesLiveData;
     private LiveData<ImgurResponse> imgurResponseLiveData;
     private LiveData<IsPicLikedResponse> isPicLikedResponseLiveData;
+    private LiveData<LikePicResponse> likePicResponseLiveData;
 
     public ImageViewModel(@NonNull Application application) {
         super(application);
@@ -40,6 +42,7 @@ public class ImageViewModel extends AndroidViewModel {
         postImagesLiveData = imageRepository.getPostImagesLiveData();
         imgurResponseLiveData = imageRepository.getImgurResponseLiveData();
         isPicLikedResponseLiveData = imageRepository.getIsPicLikedResponseLiveData();
+        likePicResponseLiveData = imageRepository.getLikePicResponseLiveData();
     }
 
     public void getAllPostPics() {
@@ -64,5 +67,9 @@ public class ImageViewModel extends AndroidViewModel {
 
     public LiveData<IsPicLikedResponse> getIsPicLikedResponseLiveData() {
         return isPicLikedResponseLiveData;
+    }
+
+    public LiveData<LikePicResponse> getLikePicResponseLiveData() {
+        return likePicResponseLiveData;
     }
 }

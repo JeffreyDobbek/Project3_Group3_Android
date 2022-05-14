@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.cst438_project03_group03.databinding.ActivityImageBinding;
 import com.example.cst438_project03_group03.models.IsPicLikedResponse;
+import com.example.cst438_project03_group03.models.LikePicResponse;
 import com.example.cst438_project03_group03.util.Constants;
 import com.example.cst438_project03_group03.viewmodels.ImageViewModel;
 
@@ -85,7 +86,7 @@ public class ImageActivity extends AppCompatActivity {
         mLikeIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                updateLikedStatus();
             }
         });
     }
@@ -99,8 +100,16 @@ public class ImageActivity extends AppCompatActivity {
             public void onChanged(IsPicLikedResponse response) {
                 if (response != null) {
                     mResult = response.getResult();
-                    Toast.makeText(getApplicationContext(), mResult, Toast.LENGTH_SHORT).show();
                     setLikedStatus(mResult);
+                }
+            }
+        });
+
+        mImageViewModel.getLikePicResponseLiveData().observe(this, new Observer<LikePicResponse>() {
+            @Override
+            public void onChanged(LikePicResponse response) {
+                if (response != null) {
+
                 }
             }
         });
@@ -125,6 +134,14 @@ public class ImageActivity extends AppCompatActivity {
     }
 
     private void updateLikedStatus() {
-
+        if (mLikeIv.getTag().equals("not liked")) {
+            mLikeIv.setImageResource(R.drawable.ic_like);
+            mLikeIv.setTag("liked");
+            mNumLikesTv.setText((mNumLikes + 1) + "");
+        } else {
+            mLikeIv.setImageResource(R.drawable.ic_like_border);
+            mLikeIv.setTag("not liked");
+            mNumLikesTv.setText(mNumLikes + "");
+        }
     }
 }

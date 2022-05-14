@@ -4,6 +4,7 @@ import com.example.cst438_project03_group03.models.CommentInfo;
 import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.IsPicLikedResponse;
+import com.example.cst438_project03_group03.models.LikePicResponse;
 import com.example.cst438_project03_group03.models.PostInfo;
 import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
@@ -86,6 +87,30 @@ public interface ApiService {
      */
     @GET("api/isPicLiked")
     Call<IsPicLikedResponse> isPicLiked(
+            @Query("userId") int userId,
+            @Query("imageId") int imageId
+    );
+
+    /**
+     * API request to like an image.
+     * @param userId The user's id.
+     * @param imageId The image's id.
+     * @return message saying whether image has been liked or not.
+     */
+    @GET("api/likePic")
+    Call<LikePicResponse> likePic(
+            @Query("userId") int userId,
+            @Query("imageId") int imageId
+    );
+
+    /**
+     * API request to unlike an image.
+     * @param userId The user's id.
+     * @param imageId The image's id.
+     * @return message saying whether image has been unliked or not.
+     */
+    @GET("api/unlikePic")
+    Call<LikePicResponse> unlikePic(
             @Query("userId") int userId,
             @Query("imageId") int imageId
     );

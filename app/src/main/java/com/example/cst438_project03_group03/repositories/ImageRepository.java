@@ -14,6 +14,7 @@ import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.IsPicLikedResponse;
+import com.example.cst438_project03_group03.models.LikePicResponse;
 import com.example.cst438_project03_group03.util.Constants;
 
 import java.security.spec.ECField;
@@ -34,6 +35,7 @@ public class ImageRepository {
     private final MutableLiveData<List<ImageInfo>> postImagesLiveData;
     private final MutableLiveData<ImgurResponse> imgurResponseLiveData;
     private final MutableLiveData<IsPicLikedResponse> isPicLikedResponseLiveData;
+    private final MutableLiveData<LikePicResponse> likePicResponseLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
@@ -42,6 +44,7 @@ public class ImageRepository {
         postImagesLiveData = new MutableLiveData<>();
         imgurResponseLiveData = new MutableLiveData<>();
         isPicLikedResponseLiveData = new MutableLiveData<>();
+        likePicResponseLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -62,6 +65,9 @@ public class ImageRepository {
                 .create(ImgurApiService.class);
     }
 
+    /**
+     * Gets all images from the database.
+     */
     public void getAllPostPics() {
         apiService.getAllPostPics()
                 .enqueue(new Callback<List<ImageInfo>>() {
@@ -81,6 +87,11 @@ public class ImageRepository {
                 });
     }
 
+    /**
+     * Gets a response saying whether an image has been liked or not by a user.
+     * @param userId The user's id.
+     * @param imageId The image's id.
+     */
     public void isPicLiked(int userId, int imageId) {
         apiService.isPicLiked(userId, imageId)
                 .enqueue(new Callback<IsPicLikedResponse>() {
@@ -100,6 +111,59 @@ public class ImageRepository {
                 });
     }
 
+    /**
+     * Gets a response after a user attempts to like an image.
+     * @param userId The user's id.
+     * @param imageId The image's id.
+     */
+    public void likePic(int userId, int imageId) {
+        apiService.likePic(userId, imageId)
+                .enqueue(new Callback<LikePicResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LikePicResponse> call, @NonNull Response<LikePicResponse> response) {
+                        if (response.body() != null) {
+                            likePicResponseLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<LikePicResponse> call, @NonNull Throwable t) {
+                        likePicResponseLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
+    /**
+     * Gets a response after a user attempts to unlike an image.
+     * @param userId The user's id.
+     * @param imageId The image's id.
+     */
+    public void unlikePic(int userId, int imageId) {
+        apiService.unlikePic(userId, imageId)
+                .enqueue(new Callback<LikePicResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LikePicResponse> call, @NonNull Response<LikePicResponse> response) {
+                        if (response.body() != null) {
+                            likePicResponseLiveData.postValue(response.body());
+                            Log.i("success", "success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<LikePicResponse> call, @NonNull Throwable t) {
+                        likePicResponseLiveData.postValue(null);
+                        Log.i("fail", "fail");
+                    }
+                });
+    }
+
+    /**
+     * Gets a response from the Imgur API after attempting to upload an image.
+     * @param imgurUpload An ImgurUpload object.
+     * @param clientId The Imgur client id.
+     */
     public void imgurUpload(ImgurUpload imgurUpload, String clientId) {
         imgurApiService.imgurUpload(imgurUpload, clientId)
                 .enqueue(new Callback<ImgurResponse>() {
@@ -127,5 +191,9 @@ public class ImageRepository {
     }
     public LiveData<IsPicLikedResponse> getIsPicLikedResponseLiveData() {
         return isPicLikedResponseLiveData;
+    }
+
+    public LiveData<LikePicResponse> getLikePicResponseLiveData() {
+        return likePicResponseLiveData;
     }
 }
