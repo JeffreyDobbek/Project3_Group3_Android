@@ -5,10 +5,15 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Class: UserInfo.java
+ * Description: Model for posting and retrieving users from the database via API requests.
+ */
 public class UserInfo {
 
     @SerializedName("userId")
     @Expose
+    @PrimaryKey
     private int userId;
 
     @SerializedName("username")

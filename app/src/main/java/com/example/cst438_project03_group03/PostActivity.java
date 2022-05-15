@@ -1,6 +1,5 @@
 package com.example.cst438_project03_group03;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -9,17 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.cst438_project03_group03.databinding.FragmentSecondCreateAccountBinding;
-import com.example.cst438_project03_group03.fragments.SecondCreateAccountFragment;
-import com.example.cst438_project03_group03.models.CreateAccountResult;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.UserInfo;
@@ -63,14 +56,14 @@ public class PostActivity extends AppCompatActivity {
 
 
 
-        mImageViewModel.getImgurResponseLiveData().observe(getViewLifecycleOwner(), new Observer<ImgurResponse>() {
+        mImageViewModel.getImgurResponseLiveData().observe(this, new Observer<ImgurResponse>() {
             @Override
             public void onChanged(ImgurResponse imgurResponse) {
                 if (imgurResponse != null) {
                     mPic = imgurResponse.getData().getLink();
 
                 } else {
-                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
                 }
             }
         });

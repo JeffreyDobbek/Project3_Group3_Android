@@ -16,6 +16,12 @@
         android:theme="@style/Theme.CST438_Project03_Group03"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ImageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ViewCommentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity

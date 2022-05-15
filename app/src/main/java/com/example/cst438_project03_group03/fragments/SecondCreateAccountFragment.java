@@ -2,7 +2,6 @@ package com.example.cst438_project03_group03.fragments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,12 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.BuildConfig;
 import com.example.cst438_project03_group03.LoginActivity;
+import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.databinding.FragmentSecondCreateAccountBinding;
-import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.ImgurResponse;
 import com.example.cst438_project03_group03.models.ImgurUpload;
 import com.example.cst438_project03_group03.models.UserInfo;
@@ -33,8 +35,6 @@ import com.example.cst438_project03_group03.viewmodels.ImageViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -49,6 +49,7 @@ public class SecondCreateAccountFragment extends Fragment {
 
     private static final int RESULT_LOAD_IMAGE = 1;
 
+    private ImageView mBackIv;
     private CircleImageView mProfilePic;
 
     private EditText mUsernameField;
@@ -101,66 +102,41 @@ public class SecondCreateAccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         wireUpDisplay();
-
-        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
-
-        mImageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
-        mImageViewModel.init();
-
-        /**
-         * Get request for all users from the database.
-         */
-        mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
-            @Override
-            public void onChanged(List<UserInfo> users) {
-                if (users != null) {
-                    mUsers = users;
-                }
-            }
-        });
+        setOnClickListeners();
+        setUserViewModel();
+        setImageViewModel();
 
         mUserViewModel.getAllUsers();
+    }
 
-        /**
-         * Post request to save a user to the database.
-         */
-        mUserViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResult>() {
+    /**
+     * Wire up display components.
+     * mBackIv
+     * mProfilePic
+     * mUsernameField
+     * mNameField
+     * mRegisterButton
+     * mUploadPictureButton
+     */
+    private void wireUpDisplay() {
+        mBackIv = mBinding.createAccountBackIv;
+        mProfilePic = mBinding.createAccountCircleImage;
+
+        mUsernameField = mBinding.createAccountUsernameEditText;
+        mNameField = mBinding.createAccountNameEditText;
+
+        mRegisterButton = mBinding.createAccountRegisterButton;
+        mUploadPictureButton = mBinding.createAccountUploadPictureButton;
+    }
+
+    private void setOnClickListeners() {
+        mBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(CreateAccountResult response) {
-                if (response != null) {
-                    Toast.makeText(getContext().getApplicationContext(), "Account Successfully Created.", Toast.LENGTH_SHORT).show();
-                    Log.i("newId", response.getNewId() + "");
+            public void onClick(View v) {
+                Fragment fragment = FirstCreateAccountFragment.newInstance();
 
-                    Intent intent = new Intent(view.getContext(), LoginActivity.class);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        /**
-         * Post request to upload an image to Imgur.
-         * Used to retrieve an imgur link.
-         */
-        mImageViewModel.getImgurResponseLiveData().observe(getViewLifecycleOwner(), new Observer<ImgurResponse>() {
-            @Override
-            public void onChanged(ImgurResponse imgurResponse) {
-                if (imgurResponse != null) {
-                    mPic = imgurResponse.getData().getLink();
-                    mUser = new UserInfo();
-
-                    mUser.setUsername(mUsername);
-                    mUser.setEmail(mEmail);
-                    mUser.setName(mName);
-                    mUser.setPic(mPic);
-                    mUser.setPassword(mPassword);
-
-                    mUserViewModel.createUser(mUser);
-                } else {
-                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                }
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.create_account_fragment_fl, fragment).commit();
             }
         });
 
@@ -190,22 +166,68 @@ public class SecondCreateAccountFragment extends Fragment {
         });
     }
 
-    /**
-     * Wire up display components.
-     * mProfilePic
-     * mUsernameField
-     * mNameField
-     * mRegisterButton
-     * mUploadPictureButton
-     */
-    private void wireUpDisplay() {
-        mProfilePic = mBinding.createAccountCircleImage;
+    private void setUserViewModel() {
+        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mUserViewModel.init();
 
-        mUsernameField = mBinding.createAccountUsernameEditText;
-        mNameField = mBinding.createAccountNameEditText;
+        /**
+         * Get request for all users from the database.
+         */
+        mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+            @Override
+            public void onChanged(List<UserInfo> users) {
+                if (users != null) {
+                    mUsers = users;
+                }
+            }
+        });
 
-        mRegisterButton = mBinding.createAccountRegisterButton;
-        mUploadPictureButton = mBinding.createAccountUploadPictureButton;
+        /**
+         * Post request to save a user to the database.
+         */
+        mUserViewModel.getCreateUserLiveData().observe(getViewLifecycleOwner(), new Observer<CreateAccountResponse>() {
+            @Override
+            public void onChanged(CreateAccountResponse response) {
+                if (response != null) {
+                    Toast.makeText(getContext().getApplicationContext(), "Account Successfully Created.", Toast.LENGTH_SHORT).show();
+                    Log.i("newId", response.getNewId() + "");
+
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setImageViewModel() {
+        mImageViewModel = new ViewModelProvider(this).get(ImageViewModel.class);
+        mImageViewModel.init();
+
+        /**
+         * Post request to upload an image to Imgur.
+         * Used to retrieve an imgur link.
+         */
+        mImageViewModel.getImgurResponseLiveData().observe(getViewLifecycleOwner(), new Observer<ImgurResponse>() {
+            @Override
+            public void onChanged(ImgurResponse imgurResponse) {
+                if (imgurResponse != null) {
+                    mPic = imgurResponse.getData().getLink();
+                    mUser = new UserInfo();
+
+                    mUser.setUsername(mUsername);
+                    mUser.setEmail(mEmail);
+                    mUser.setName(mName);
+                    mUser.setPic(mPic);
+                    mUser.setPassword(mPassword);
+
+                    mUserViewModel.createUser(mUser);
+                } else {
+                    Toast.makeText(getContext().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**

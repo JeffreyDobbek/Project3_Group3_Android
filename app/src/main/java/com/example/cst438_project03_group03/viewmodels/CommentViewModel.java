@@ -7,12 +7,17 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.example.cst438_project03_group03.database.Comment;
+import com.example.cst438_project03_group03.models.CommentInfo;
+import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.repositories.CommentRepository;
+
+import java.util.List;
 
 public class CommentViewModel extends AndroidViewModel {
 
     private CommentRepository commentRepository;
-    private LiveData<Comment> commentLiveData;
+    private LiveData<UploadCommentResponse> uploadCommentResponseLiveData;
+    private LiveData<List<CommentInfo>> commentListLiveData;
 
     public CommentViewModel(@NonNull Application application) {
         super(application);
@@ -20,14 +25,21 @@ public class CommentViewModel extends AndroidViewModel {
 
     public void init() {
         commentRepository = new CommentRepository();
-        commentLiveData = commentRepository.getCommentLiveData();
+        uploadCommentResponseLiveData = commentRepository.getUploadCommentResponseLiveData();
+        commentListLiveData = commentRepository.getCommentListLiveData();
     }
 
-    public void getComments() {
-        commentRepository.getComments();
+    public void uploadComment(CommentInfo commentInfo) {
+        commentRepository.uploadComment(commentInfo);
+    }
+    public void getPostComments(int postId) {
+        commentRepository.getPostComments(postId);
     }
 
-    public LiveData<Comment> getCommentLiveData() {
-        return commentLiveData;
+    public LiveData<UploadCommentResponse> getUploadCommentResponseLiveData() {
+        return uploadCommentResponseLiveData;
+    }
+    public LiveData<List<CommentInfo>> getCommentListLiveData() {
+        return commentListLiveData;
     }
 }

@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 if (mSharedPrefs.getInt(Constants.USER_ID_KEY, -1) != -1) {
                     SharedPreferences.Editor editor = mSharedPrefs.edit();
                     editor.putInt(Constants.USER_ID_KEY, -1);
+                    editor.putString(Constants.USER_NAME_KEY, null);
+                    editor.putString(Constants.USER_USERNAME_KEY, null);
+                    editor.putString(Constants.USER_PROFILE_PIC_KEY, null);
                     editor.apply();
                 }
 

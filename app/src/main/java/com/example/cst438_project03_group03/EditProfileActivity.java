@@ -61,20 +61,25 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private SharedPreferences mSharedPrefs;
 
+    private String mProfilePic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
 
+        getSupportActionBar().hide();
+
         mBinding = ActivityEditProfileBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
-
-        getSupportActionBar().hide();
-        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
 
         wireUpDisplay();
         setOnClickListeners();
         setUserViewModel();
+
+        mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
+        mProfilePic = mSharedPrefs.getString(Constants.USER_PROFILE_PIC_KEY, null);
+        setProfilePic(mProfilePic);
 
         mUserViewModel.getUserByUserId(mSharedPrefs.getInt(Constants.USER_ID_KEY, -1));
     }
@@ -167,7 +172,6 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onChanged(UserInfo userInfo) {
                 if (userInfo != null) {
                     mUserInfo = userInfo;
-                    setProfilePic(userInfo.getImage());
                 }
             }
         });

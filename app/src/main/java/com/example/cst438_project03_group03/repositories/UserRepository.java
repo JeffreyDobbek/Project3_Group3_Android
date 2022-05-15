@@ -7,8 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cst438_project03_group03.api.ApiService;
-import com.example.cst438_project03_group03.database.User;
-import com.example.cst438_project03_group03.models.CreateAccountResult;
+import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.util.Constants;
 
@@ -16,15 +15,12 @@ import com.example.cst438_project03_group03.util.Constants;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 
 /**
  * Class: UserRepository.java
@@ -35,7 +31,7 @@ public class UserRepository {
     private final ApiService apiService;
     private final MutableLiveData<List<UserInfo>> userListLiveData;
     private final MutableLiveData<UserInfo> userLiveData;
-    private final MutableLiveData<CreateAccountResult> createUserLiveData;
+    private final MutableLiveData<CreateAccountResponse> createUserLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
@@ -130,9 +126,9 @@ public class UserRepository {
 
     public void createUser(UserInfo userInfo) {
         apiService.createUser(userInfo)
-                .enqueue(new Callback<CreateAccountResult>() {
+                .enqueue(new Callback<CreateAccountResponse>() {
                     @Override
-                    public void onResponse(@NonNull Call<CreateAccountResult> call, @NonNull Response<CreateAccountResult> response) {
+                    public void onResponse(@NonNull Call<CreateAccountResponse> call, @NonNull Response<CreateAccountResponse> response) {
                         if (response.body() != null) {
                             createUserLiveData.postValue(response.body());
                             Log.i("success", "success");
@@ -140,7 +136,7 @@ public class UserRepository {
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<CreateAccountResult> call, @NonNull Throwable t) {
+                    public void onFailure(@NonNull Call<CreateAccountResponse> call, @NonNull Throwable t) {
                         createUserLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
@@ -164,7 +160,7 @@ public class UserRepository {
     /**
      * @return LiveData of create user response.
      */
-    public LiveData<CreateAccountResult> getCreateUserLiveData() {
+    public LiveData<CreateAccountResponse> getCreateUserLiveData() {
         return createUserLiveData;
     }
 }

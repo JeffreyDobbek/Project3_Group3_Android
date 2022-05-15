@@ -22,16 +22,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Class: PostRepository.java
+ * Description: Repository to handle post requests from the database.
+ */
 public class PostRepository {
 
     private final ApiService apiService;
-    private final MutableLiveData<List<PostInfo>> allLivePostsLiveData;
+    private final MutableLiveData<List<PostInfo>> postListLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
      */
     public PostRepository() {
-        allLivePostsLiveData = new MutableLiveData<>();
+        postListLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -54,41 +58,68 @@ public class PostRepository {
                     @Override
                     public void onResponse(@NonNull Call<List<PostInfo>> call, @NonNull Response<List<PostInfo>> response) {
                         if (response.body() != null) {
-                            allLivePostsLiveData.postValue(response.body());
+                            postListLiveData.postValue(response.body());
                             Log.i("success", "success");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<PostInfo>> call, Throwable t) {
-                        allLivePostsLiveData.postValue(null);
+                    public void onFailure(@NonNull Call<List<PostInfo>> call, @NonNull Throwable t) {
+                        postListLiveData.postValue(null);
                         Log.i("fail", "fail");
                     }
                 });
     }
 
-
-    /*
-    public void getAllLivePosts() {
-        try {
-            Response<List<PostInfo>> response = apiService.getAllLivePosts().execute();
-
-            if (response.body() != null) {
-                allLivePostsLiveData.postValue(response.body());
-            } else {
-                allLivePostsLiveData.postValue(null);
+    /**
+     * Gets all of a user's posts.
+     * @param userId The user's id.
+     */
+    public void getUserPosts(int userId) {
+        apiService.getUserPosts(userId).enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<PostInfo>> call, @NonNull Response<List<PostInfo>> response) {
+                if (response.body() != null) {
+                    postListLiveData.postValue(response.body());
+                    Log.i("success", "success");
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+            @Override
+            public void onFailure(@NonNull Call<List<PostInfo>> call, @NonNull Throwable t) {
+                postListLiveData.postValue(null);
+                Log.i("fail", "fail");
+            }
+        });
     }
-    */
+
+    /**
+     * Get all posts that a user has voted on.
+     * @param userId The user's id.
+     */
+    public void getLikedPosts(int userId) {
+        apiService.getLikedPosts(userId).enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(Call<List<PostInfo>> call, Response<List<PostInfo>> response) {
+                if (response.body() != null) {
+                    postListLiveData.postValue(response.body());
+                    Log.i("success", "success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                postListLiveData.postValue(null);
+                Log.i("fail", "fail");
+            }
+        });
+    }
 
 
     /**
      * @return LiveData of all live posts response.
      */
-    public LiveData<List<PostInfo>> getAllLivePostsLiveData() {
-        return allLivePostsLiveData;
+    public LiveData<List<PostInfo>> getPostListLiveData() {
+        return postListLiveData;
     }
 }

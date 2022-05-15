@@ -1,23 +1,24 @@
 package com.example.cst438_project03_group03.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.cst438_project03_group03.LoginActivity;
 import com.example.cst438_project03_group03.R;
-import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstForgotPasswordBinding;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
@@ -33,6 +34,10 @@ public class FirstForgotPasswordFragment extends Fragment {
 
     private FragmentFirstForgotPasswordBinding mBinding;
 
+    private ImageView mBackIv;
+
+    private Button mConfirmBtn;
+
     private EditText mEmailField;
     private EditText mUsernameField;
 
@@ -41,7 +46,7 @@ public class FirstForgotPasswordFragment extends Fragment {
 
     private List<UserInfo> mUsers;
 
-    private UserViewModel mViewModel;
+    private UserViewModel mUserViewModel;
 
     public static FirstForgotPasswordFragment newInstance() {
         return new FirstForgotPasswordFragment();
@@ -59,23 +64,30 @@ public class FirstForgotPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        wireUpDisplay();
+        setOnClickListeners();
+        setUserViewModel();
+
+        mUserViewModel.getAllUsers();
+    }
+
+    private void wireUpDisplay() {
+        mBackIv = mBinding.forgotPasswordBackIv;
+        mConfirmBtn = mBinding.forgotPasswordEmailConfirmButton;
         mEmailField = mBinding.forgotPasswordEnterEmail;
         mUsernameField = mBinding.forgotPasswordEnterUsername;
+    }
 
-        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mViewModel.init();
-        mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+    private void setOnClickListeners() {
+        mBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(List<UserInfo> users) {
-                if (users != null) {
-                    mUsers = users;
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 
-        mViewModel.getAllUsers();
-
-        mBinding.forgotPasswordEmailConfirmButton.setOnClickListener(new View.OnClickListener() {
+        mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFields();
@@ -90,11 +102,27 @@ public class FirstForgotPasswordFragment extends Fragment {
 
                         FragmentManager fragmentManager = getFragmentManager();
                         fragmentManager.beginTransaction().replace(R.id.forgot_password_fragment_fl, fragment).commit();
+
+                        Toast.makeText(getContext().getApplicationContext(), "Credentials Confirmed", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getContext().getApplicationContext(), "This email and username are not associated with an account.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext().getApplicationContext(), "This email and/or username are not associated with an account.", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getContext().getApplicationContext(), "Please fill out all fields.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setUserViewModel() {
+        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mUserViewModel.init();
+
+        mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
+            @Override
+            public void onChanged(List<UserInfo> users) {
+                if (users != null) {
+                    mUsers = users;
                 }
             }
         });
@@ -110,7 +138,7 @@ public class FirstForgotPasswordFragment extends Fragment {
     }
 
     private boolean validCredentials() {
-        mViewModel.getAllUsers();
+        mUserViewModel.getAllUsers();
 
         for (UserInfo user : mUsers) {
             if (user.getEmail().equals(mEmail) && user.getUsername().equals(mUsername)) {

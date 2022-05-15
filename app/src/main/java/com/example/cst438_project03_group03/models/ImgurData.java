@@ -3,6 +3,10 @@ package com.example.cst438_project03_group03.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Class: ImgurData.java
+ * Description: Model for data segment of ImgurResponse model.
+ */
 public class ImgurData {
 
     @SerializedName("id")
