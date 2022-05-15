@@ -22,6 +22,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Class: PostRepository.java
+ * Description: Repository to handle post requests from the database.
+ */
 public class PostRepository {
 
     private final ApiService apiService;
@@ -67,6 +71,10 @@ public class PostRepository {
                 });
     }
 
+    /**
+     * Gets all of a user's posts.
+     * @param userId The user's id.
+     */
     public void getUserPosts(int userId) {
         apiService.getUserPosts(userId).enqueue(new Callback<List<PostInfo>>() {
             @Override

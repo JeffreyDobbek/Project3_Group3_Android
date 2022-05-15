@@ -4,6 +4,10 @@ import com.example.cst438_project03_group03.database.ImageDao;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Class: ImgurResponse.java
+ * Description: Model for response from Imgur upload API request.
+ */
 public class ImgurResponse {
 
     @SerializedName("data")

@@ -21,6 +21,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class: CommentsAdapter.java
+ * Description: Recycler view adapter for post comments.
+ */
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.CommentsHolder> {
 
     private Context context;
@@ -68,6 +72,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
             holder.likes.setText("Likes: 0");
         }
 
+        /**
+         * Likes or unlikes a comments
+         * TODO: Needs to be connected to an api endpoint for persistence.
+         */
         holder.favoriteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,6 +117,10 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Commen
         notifyDataSetChanged();
     }
 
+    /**
+     * Class: CommentsHolder.java
+     * Description: Recycler view holder for comment data.
+     */
     public class CommentsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView profilePic;

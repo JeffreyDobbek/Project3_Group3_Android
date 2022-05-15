@@ -5,6 +5,10 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Class: ImageInfo.java
+ * Description: Model for posting and retrieving images from the database via API requests.
+ */
 public class ImageInfo {
 
     @SerializedName("imageId")

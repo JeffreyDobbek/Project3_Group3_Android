@@ -28,6 +28,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Class: ImageRepository.java
+ * Description: Repository to handle image requests from the database.
+ */
 public class ImageRepository {
 
     private final ApiService apiService;

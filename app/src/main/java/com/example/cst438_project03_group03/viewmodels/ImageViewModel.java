@@ -57,6 +57,14 @@ public class ImageViewModel extends AndroidViewModel {
         imageRepository.imgurUpload(imgurUpload, clientId);
     }
 
+    public void likePic(int userId, int imageId) {
+        imageRepository.likePic(userId, imageId);
+    }
+
+    public void unlikePic(int userId, int imageId) {
+        imageRepository.unlikePic(userId, imageId);
+    }
+
     public LiveData<List<ImageInfo>> getPostImagesLiveData() {
         return postImagesLiveData;
     }

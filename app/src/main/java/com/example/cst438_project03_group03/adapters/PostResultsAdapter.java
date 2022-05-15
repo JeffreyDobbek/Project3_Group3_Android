@@ -32,9 +32,13 @@ import javax.microedition.khronos.opengles.GL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class: PostResultsAdapter.java
+ * Description: Recycler view adapter for posts.
+ */
 public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.PostResultsHolder> {
 
-    private Context context;
+    private final Context context;
     private List<PostInfo> posts = new ArrayList<>();
     private HashMap<Integer, UserInfo> users = new HashMap<>();
     private HashMap<Integer, List<ImageInfo>> images = new HashMap<>();
@@ -55,7 +59,6 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
     @Override
     public void onBindViewHolder(@NonNull PostResultsHolder holder, int position) {
         PostInfo post = posts.get(position);
-        Intent intent = new Intent(context, ImageActivity.class);
         ImagesPagerAdapter adapter;
 
         if (post.getProfilePic() != null) {
@@ -79,23 +82,6 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         if (!post.getImages().isEmpty()) {
             adapter = new ImagesPagerAdapter(context, post.getImages());
             holder.viewPager.setAdapter(adapter);
-
-            holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-                }
-
-                @Override
-                public void onPageSelected(int position) {
-
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-            });
         }
 
         if (post.getCaption() != null) {
@@ -150,6 +136,10 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         notifyDataSetChanged();
     }
 
+    /**
+     * Class: PostResultsHolder
+     * Description: Recycler view holder for individual post information.
+     */
     public class PostResultsHolder extends RecyclerView.ViewHolder {
 
         private CircleImageView profilePic;
