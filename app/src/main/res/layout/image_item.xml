@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/live_feed_like_iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="35dp"
+                android:layout_height="27dp"
                 android:layout_marginStart="5dp"
                 android:src="@drawable/ic_like_border"
                 app:layout_constraintStart_toStartOf="parent"

@@ -171,4 +171,10 @@ public class LiveFeedActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        mPostViewModel.getAllLivePosts();
+    }
 }

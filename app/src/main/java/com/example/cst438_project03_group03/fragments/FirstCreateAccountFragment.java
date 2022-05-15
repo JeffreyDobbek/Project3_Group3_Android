@@ -1,5 +1,6 @@
 package com.example.cst438_project03_group03.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.cst438_project03_group03.LoginActivity;
 import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.databinding.FragmentFirstCreateAccountBinding;
@@ -33,6 +36,8 @@ public class FirstCreateAccountFragment extends Fragment {
     private EditText mEmailField;
     private EditText mPasswordField;
     private EditText mConfirmPasswordField;
+
+    private ImageView mBackIv;
 
     private String mEmail;
     private String mPassword;
@@ -68,6 +73,7 @@ public class FirstCreateAccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         wireUpDisplay();
+        setOnClickListeners();
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         mViewModel.init();
@@ -83,7 +89,21 @@ public class FirstCreateAccountFragment extends Fragment {
         });
 
         mViewModel.getAllUsers();
+    }
 
+    /**
+     * Wires up display components.
+     */
+    private void wireUpDisplay() {
+        mEmailField = mBinding.createAccountEmailEditText;
+        mPasswordField = mBinding.createAccountPasswordEditText;
+        mConfirmPasswordField = mBinding.createAccountConfirmPasswordEditText;
+
+        mRegisterButton = mBinding.createAccountButton;
+        mBackIv = mBinding.createAccountBackIv;
+    }
+
+    private void setOnClickListeners() {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,17 +125,14 @@ public class FirstCreateAccountFragment extends Fragment {
                 }
             }
         });
-    }
 
-    /**
-     * Wires up display components.
-     */
-    private void wireUpDisplay() {
-        mEmailField = mBinding.createAccountEmailEditText;
-        mPasswordField = mBinding.createAccountPasswordEditText;
-        mConfirmPasswordField = mBinding.createAccountConfirmPasswordEditText;
-
-        mRegisterButton = mBinding.createAccountButton;
+        mBackIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**

@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
 
                     Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LiveFeedActivity.class);
                     startActivity(intent);
                 }
             }
@@ -194,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
 
                     Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), LiveFeedActivity.class);
                     startActivity(intent);
                 }
             }
@@ -206,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void automaticLogin() {
         if (mSharedPrefs.getInt(Constants.USER_ID_KEY, -1) != -1 || GoogleSignIn.getLastSignedInAccount(LoginActivity.this) != null) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, LiveFeedActivity.class);
             startActivity(intent);
         }
     }
@@ -297,7 +297,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.apply();
 
                 Toast.makeText(getApplicationContext(), "Login Successful.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LiveFeedActivity.class);
                 startActivity(intent);
             } else {
                 mNewUser = new UserInfo();

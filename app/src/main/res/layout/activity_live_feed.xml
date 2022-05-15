@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/Theme.CST438_Project03_Group03"
+        android:background="@color/white"
         tools:ignore="MissingConstraints">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,6 +30,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="?actionBarSize"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="100dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/choice_logo"/>
+z
 
             <ImageView
                 android:id="@+id/live_feed_new_post_iv"

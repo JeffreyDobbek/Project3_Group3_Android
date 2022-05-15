@@ -5,22 +5,23 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.cst438_project03_group03.LoginActivity;
-import com.example.cst438_project03_group03.database.User;
+import com.example.cst438_project03_group03.R;
 import com.example.cst438_project03_group03.databinding.FragmentSecondForgotPasswordBinding;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
-
-import java.util.List;
 
 /**
  * Class: SecondForgotPasswordFragment.java
@@ -31,6 +32,9 @@ public class SecondForgotPasswordFragment extends Fragment {
 
     private FragmentSecondForgotPasswordBinding mBinding;
 
+    private ImageView mBackIv;
+    private Button mConfirmBtn;
+
     private EditText mNewPasswordField;
     private EditText mConfirmPasswordField;
 
@@ -40,7 +44,7 @@ public class SecondForgotPasswordFragment extends Fragment {
 
     private UserInfo mUser;
 
-    private UserViewModel mViewModel;
+    private UserViewModel mUserViewModel;
 
     public static SecondForgotPasswordFragment newInstance() {
         return new SecondForgotPasswordFragment();
@@ -67,23 +71,32 @@ public class SecondForgotPasswordFragment extends Fragment {
         assert bundle != null;
         mUsername = bundle.getString("username");
 
+        wireUpDisplay();
+        setOnClickListeners();
+        setUserViewModel();
+
+        mUserViewModel.getUserByUsername(mUsername);
+    }
+
+    private void wireUpDisplay() {
+        mBackIv = mBinding.forgotPasswordBackIv;
+        mConfirmBtn = mBinding.forgotPasswordConfirmButton;
         mNewPasswordField = mBinding.forgotPasswordEnterNewPassword;
         mConfirmPasswordField = mBinding.forgotPasswordConfirmNewPassword;
+    }
 
-        mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mViewModel.init();
-        mViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
+    private void setOnClickListeners() {
+        mBackIv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onChanged(UserInfo user) {
-                if (user != null) {
-                    mUser = user;
-                }
+            public void onClick(View v) {
+                Fragment fragment = FirstForgotPasswordFragment.newInstance();
+
+                FragmentManager fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.forgot_password_fragment_fl, fragment).commit();
             }
         });
 
-        mViewModel.getUserByUsername(mUsername);
-
-        mBinding.forgotPasswordConfirmButton.setOnClickListener(new View.OnClickListener() {
+        mConfirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getFields();
@@ -94,7 +107,7 @@ public class SecondForgotPasswordFragment extends Fragment {
                             updatePassword();
                             Toast.makeText(getContext().getApplicationContext(), "Password Successfully Reset.", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(getContext().getApplicationContext(), "Passwords do not match.", Toast.LENGTH_SHORT).show();
@@ -104,6 +117,20 @@ public class SecondForgotPasswordFragment extends Fragment {
                     }
                 } else {
                     Toast.makeText(getContext().getApplicationContext(), "Please fill out all fields", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void setUserViewModel() {
+        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        mUserViewModel.init();
+
+        mUserViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
+            @Override
+            public void onChanged(UserInfo user) {
+                if (user != null) {
+                    mUser = user;
                 }
             }
         });
@@ -119,7 +146,7 @@ public class SecondForgotPasswordFragment extends Fragment {
     }
 
     private boolean isNew() {
-        mViewModel.getUserByUsername(mUsername);
+        mUserViewModel.getUserByUsername(mUsername);
 
         return !mUser.getPassword().equals(mNewPassword);
     }

@@ -156,4 +156,10 @@ public class MyPostsFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPostViewModel.getUserPosts(mUserId);
+    }
 }

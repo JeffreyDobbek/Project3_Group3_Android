@@ -23,6 +23,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
+        getSupportActionBar().hide();
+
         FirstCreateAccountFragment firstCreateAccountFragment = FirstCreateAccountFragment.newInstance();
         SecondCreateAccountFragment secondCreateAccountFragment = SecondCreateAccountFragment.newInstance();
 
