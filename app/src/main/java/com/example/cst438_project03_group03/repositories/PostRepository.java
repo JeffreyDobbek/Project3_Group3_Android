@@ -93,6 +93,28 @@ public class PostRepository {
         });
     }
 
+    /**
+     * Get all posts that a user has voted on.
+     * @param userId The user's id.
+     */
+    public void getLikedPosts(int userId) {
+        apiService.getLikedPosts(userId).enqueue(new Callback<List<PostInfo>>() {
+            @Override
+            public void onResponse(Call<List<PostInfo>> call, Response<List<PostInfo>> response) {
+                if (response.body() != null) {
+                    postListLiveData.postValue(response.body());
+                    Log.i("success", "success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<PostInfo>> call, Throwable t) {
+                postListLiveData.postValue(null);
+                Log.i("fail", "fail");
+            }
+        });
+    }
+
 
     /**
      * @return LiveData of all live posts response.

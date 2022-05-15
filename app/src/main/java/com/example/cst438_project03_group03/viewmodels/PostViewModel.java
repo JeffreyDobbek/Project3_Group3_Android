@@ -31,6 +31,9 @@ public class PostViewModel extends AndroidViewModel {
     public void getUserPosts(int userId) {
         postRepository.getUserPosts(userId);
     }
+    public void getLikedPosts(int userId) {
+        postRepository.getLikedPosts(userId);
+    }
 
     public LiveData<List<PostInfo>> getPostListLiveData() {
         return postListLiveData;

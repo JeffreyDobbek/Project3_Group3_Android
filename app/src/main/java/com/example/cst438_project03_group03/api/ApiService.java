@@ -73,6 +73,14 @@ public interface ApiService {
     Call<List<PostInfo>> getUserPosts(@Query("userId") int userId);
 
     /**
+     * API reqeust to get all posts that a user has voted on.
+     * @param userId The user's id.
+     * @return a list of posts.
+     */
+    @GET("api/getLikedPosts")
+    Call<List<PostInfo>> getLikedPosts(@Query("userId") int userId);
+
+    /**
      * API request to get all pictures from the database.
      * @return a list of images.
      */

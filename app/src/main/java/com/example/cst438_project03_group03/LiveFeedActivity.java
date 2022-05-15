@@ -24,9 +24,14 @@ import com.example.cst438_project03_group03.viewmodels.PostViewModel;
 import com.example.cst438_project03_group03.viewmodels.UserViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Class: LiveFeedActivity.java
+ * Description: Holds live feed of all live posts.
+ */
 public class LiveFeedActivity extends AppCompatActivity {
 
     private UserViewModel mUserViewModel;
@@ -66,13 +71,13 @@ public class LiveFeedActivity extends AppCompatActivity {
         wireUpDisplay();
         setOnClickListeners();
 
-        /**
-         * Listens for request for all live posts in the database.
-         */
+        // Listens for request for all live posts in the database.
         mPostViewModel.getPostListLiveData().observe(this, new Observer<List<PostInfo>>() {
             @Override
             public void onChanged(List<PostInfo> posts) {
                 if (posts != null) {
+                    Collections.reverse(posts);
+
                     if (mPosts.size() != posts.size()) {
                         mPosts = posts;
                     }
@@ -84,9 +89,7 @@ public class LiveFeedActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * Listens for request for all users in the database.
-         */
+        // Listens for request for all users in the database.
         mUserViewModel.getUserListLiveData().observe(this, new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(List<UserInfo> users) {
@@ -101,9 +104,7 @@ public class LiveFeedActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * Listens for request for all images in the database.
-         */
+        // Listens for request for all images in the database.
         mImageViewModel.getPostImagesLiveData().observe(this, new Observer<List<ImageInfo>>() {
             @Override
             public void onChanged(List<ImageInfo> images) {
