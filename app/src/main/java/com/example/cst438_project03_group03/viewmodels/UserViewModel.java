@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.repositories.UserRepository;
@@ -27,14 +28,29 @@ public class UserViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public void init() {
-        userRepository = new UserRepository();
+    public void init(@NonNull Application application) {
+        userRepository = new UserRepository(application);
 
         userListLiveData = userRepository.getUserListLiveData();
         userLiveData = userRepository.getUserLiveData();
         createUserLiveData = userRepository.getCreateUserLiveData();
     }
 
+    // Room
+    public void insert(User user) {
+        userRepository.insert(user);
+    }
+    public void update(User user) {
+        userRepository.update(user);
+    }
+    public void delete(User user) {
+        userRepository.update(user);
+    }
+    public void getUserById(int userId) {
+        userRepository.getUserById(userId);
+    }
+
+    // API
     public void getAllUsers() {
         userRepository.getAllUsers();
     }

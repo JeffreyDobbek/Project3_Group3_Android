@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.cst438_project03_group03.database.AppDatabase;
+import com.example.cst438_project03_group03.database.RoomDatabase;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.database.UserDao;
 import java.util.List;
@@ -33,12 +33,7 @@ public class DeleteAccountActivity extends AppCompatActivity {
         textUserName = findViewById(R.id.editTextConfirmUsername);
         textPassword = findViewById(R.id.editTextConfirmPassword);
 
-        userDAO = Room.databaseBuilder(this, AppDatabase.class, AppDatabase.DATABASE_NAME)
-                .allowMainThreadQueries()
-                .build()
-                .userDao();
 
-        users = userDAO.getAllUsers();
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -44,9 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private SharedPreferences mSharedPrefs;
 
-    private UserViewModel mUserViewModel;
-    private UserInfo mUserInfo;
-
     private TextView mNameTv;
     private TextView mUsernameTv;
 
@@ -87,7 +84,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         wireUpDisplay();
         setOnClickListeners();
-        setUserViewModel();
 
         mSharedPrefs = getSharedPreferences(Constants.SHARED_PREF_NAME, MODE_PRIVATE);
         mUserId = mSharedPrefs.getInt(Constants.USER_ID_KEY, -1);
@@ -157,14 +153,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    /**
-     * Initializes user view model and sets up live data observers.
-     */
-    private void setUserViewModel() {
-        mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
     }
 
     /**

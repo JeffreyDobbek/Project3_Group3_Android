@@ -165,7 +165,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getApplication());
 
         mUserViewModel.getUserLiveData().observe(this, new Observer<UserInfo>() {
             @Override

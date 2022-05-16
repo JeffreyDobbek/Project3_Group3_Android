@@ -1,5 +1,6 @@
 package com.example.cst438_project03_group03.repositories;
 
+import android.app.Application;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -7,6 +8,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cst438_project03_group03.api.ApiService;
+import com.example.cst438_project03_group03.database.RoomDatabase;
+import com.example.cst438_project03_group03.database.User;
+import com.example.cst438_project03_group03.database.UserDao;
 import com.example.cst438_project03_group03.models.CreateAccountResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.util.Constants;
@@ -28,6 +32,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class UserRepository {
 
+    private UserDao userDao;
+
     private final ApiService apiService;
     private final MutableLiveData<List<UserInfo>> userListLiveData;
     private final MutableLiveData<UserInfo> userLiveData;
@@ -36,7 +42,10 @@ public class UserRepository {
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
      */
-    public UserRepository() {
+    public UserRepository(@NonNull Application application) {
+        RoomDatabase database = RoomDatabase.getInstance(application);
+        userDao = database.userDao();
+
         userListLiveData = new MutableLiveData<>();
         userLiveData = new MutableLiveData<>();
         createUserLiveData = new MutableLiveData<>();
@@ -53,6 +62,21 @@ public class UserRepository {
                 .create(ApiService.class);
     }
 
+    public void insert(User user) {
+        userDao.insert(user);
+    }
+
+    public void update(User user) {
+        userDao.update(user);
+    }
+
+    public void delete(User user) {
+        userDao.delete(user);
+    }
+
+    public User getUserById(int userId) {
+        return userDao.getUserById(userId);
+    }
     /**
      * Gets every user in the database.
      */
@@ -143,23 +167,14 @@ public class UserRepository {
                 });
     }
 
-    /**
-     * @return LiveData of a list of users.
-     */
     public LiveData<List<UserInfo>> getUserListLiveData() {
         return userListLiveData;
     }
 
-    /**
-     * @return LiveData of one user.
-     */
     public LiveData<UserInfo> getUserLiveData() {
         return userLiveData;
     }
 
-    /**
-     * @return LiveData of create user response.
-     */
     public LiveData<CreateAccountResponse> getCreateUserLiveData() {
         return createUserLiveData;
     }

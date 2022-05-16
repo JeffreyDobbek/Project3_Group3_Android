@@ -116,7 +116,7 @@ public class FirstForgotPasswordFragment extends Fragment {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getActivity().getApplication());
 
         mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override

@@ -87,7 +87,7 @@ public class ChangeNameAndUsernameActivity extends AppCompatActivity {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getApplication());
 
         mUserViewModel.getUserListLiveData().observe(this, new Observer<List<UserInfo>>() {
             @Override

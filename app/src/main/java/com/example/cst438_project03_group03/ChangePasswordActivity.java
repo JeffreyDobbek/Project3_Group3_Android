@@ -84,7 +84,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getApplication());
 
         // update password
     }
