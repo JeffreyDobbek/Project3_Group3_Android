@@ -82,6 +82,7 @@ public class PostResultsAdapter extends RecyclerView.Adapter<PostResultsAdapter.
         if (!post.getImages().isEmpty()) {
             adapter = new ImagesPagerAdapter(context, post.getImages());
             holder.viewPager.setAdapter(adapter);
+            holder.viewPager.setCurrentItem(0);
         }
 
         if (post.getCaption() != null) {

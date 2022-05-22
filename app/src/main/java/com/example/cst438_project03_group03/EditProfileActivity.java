@@ -122,6 +122,7 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeNameAndUsernameActivity.class);
+                intent.putExtra("email", mUserInfo.getEmail());
                 intent.putExtra("name", mUserInfo.getName());
                 intent.putExtra("username", mUserInfo.getUsername());
                 startActivity(intent);

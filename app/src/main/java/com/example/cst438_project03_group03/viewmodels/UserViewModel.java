@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CreateAccountResponse;
+import com.example.cst438_project03_group03.models.UpdateUserResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.repositories.UserRepository;
 
@@ -23,6 +24,7 @@ public class UserViewModel extends AndroidViewModel {
     private LiveData<List<UserInfo>> userListLiveData;
     private LiveData<UserInfo> userLiveData;
     private LiveData<CreateAccountResponse> createUserLiveData;
+    private LiveData<UpdateUserResponse> updateUserLiveData;
 
     public UserViewModel(@NonNull Application application) {
         super(application);
@@ -34,6 +36,7 @@ public class UserViewModel extends AndroidViewModel {
         userListLiveData = userRepository.getUserListLiveData();
         userLiveData = userRepository.getUserLiveData();
         createUserLiveData = userRepository.getCreateUserLiveData();
+        updateUserLiveData = userRepository.getUpdateUserLiveData();
     }
 
     // Room
@@ -63,6 +66,12 @@ public class UserViewModel extends AndroidViewModel {
     public void createUser(UserInfo userInfo) {
         userRepository.createUser(userInfo);
     }
+    public void updateUser(UserInfo userInfo) {
+        userRepository.updateUser(userInfo);
+    }
+    public void updatePassword(UserInfo userInfo) {
+        userRepository.updatePassword(userInfo);
+    }
 
     public LiveData<List<UserInfo>> getUserListLiveData() {
         return userListLiveData;
@@ -72,5 +81,8 @@ public class UserViewModel extends AndroidViewModel {
     }
     public LiveData<CreateAccountResponse> getCreateUserLiveData() {
         return createUserLiveData;
+    }
+    public LiveData<UpdateUserResponse> getUpdateUserLiveData() {
+        return updateUserLiveData;
     }
 }

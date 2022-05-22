@@ -6,6 +6,7 @@ import com.example.cst438_project03_group03.models.ImageInfo;
 import com.example.cst438_project03_group03.models.IsPicLikedResponse;
 import com.example.cst438_project03_group03.models.LikePicResponse;
 import com.example.cst438_project03_group03.models.PostInfo;
+import com.example.cst438_project03_group03.models.UpdateUserResponse;
 import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 
@@ -56,6 +57,12 @@ public interface ApiService {
      */
     @POST("api/signUp")
     Call<CreateAccountResponse> createUser(@Body UserInfo userInfo);
+
+    @POST("api/updateUser")
+    Call<UpdateUserResponse> updateUser(@Body UserInfo userInfo);
+
+    @POST("api/updatePassword")
+    Call<UpdateUserResponse> updatePassword(@Body UserInfo userInfo);
 
     /**
      * API request to get all live posts.

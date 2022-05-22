@@ -12,6 +12,7 @@ import com.example.cst438_project03_group03.database.RoomDatabase;
 import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.database.UserDao;
 import com.example.cst438_project03_group03.models.CreateAccountResponse;
+import com.example.cst438_project03_group03.models.UpdateUserResponse;
 import com.example.cst438_project03_group03.models.UserInfo;
 import com.example.cst438_project03_group03.util.Constants;
 
@@ -38,6 +39,7 @@ public class UserRepository {
     private final MutableLiveData<List<UserInfo>> userListLiveData;
     private final MutableLiveData<UserInfo> userLiveData;
     private final MutableLiveData<CreateAccountResponse> createUserLiveData;
+    private final MutableLiveData<UpdateUserResponse> updateUserLiveData;
 
     /**
      * Constructor that initializes the LiveData variables and API service with Retrofit.
@@ -49,6 +51,7 @@ public class UserRepository {
         userListLiveData = new MutableLiveData<>();
         userLiveData = new MutableLiveData<>();
         createUserLiveData = new MutableLiveData<>();
+        updateUserLiveData = new MutableLiveData<>();
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -167,6 +170,40 @@ public class UserRepository {
                 });
     }
 
+    public void updateUser(UserInfo userInfo) {
+        apiService.updateUser(userInfo)
+                .enqueue(new Callback<UpdateUserResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<UpdateUserResponse> call, @NonNull Response<UpdateUserResponse> response) {
+                        if (response.body() != null) {
+                            updateUserLiveData.postValue(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<UpdateUserResponse> call, @NonNull Throwable t) {
+                        updateUserLiveData.postValue(null);
+                    }
+                });
+    }
+
+    public void updatePassword(UserInfo userInfo) {
+        apiService.updatePassword(userInfo)
+                .enqueue(new Callback<UpdateUserResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<UpdateUserResponse> call, @NonNull Response<UpdateUserResponse> response) {
+                        if (response.body() != null) {
+                            updateUserLiveData.postValue(response.body());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<UpdateUserResponse> call, @NonNull Throwable t) {
+                        updateUserLiveData.postValue(null);
+                    }
+                });
+    }
+
     public LiveData<List<UserInfo>> getUserListLiveData() {
         return userListLiveData;
     }
@@ -177,5 +214,9 @@ public class UserRepository {
 
     public LiveData<CreateAccountResponse> getCreateUserLiveData() {
         return createUserLiveData;
+    }
+
+    public LiveData<UpdateUserResponse> getUpdateUserLiveData() {
+        return updateUserLiveData;
     }
 }

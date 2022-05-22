@@ -172,4 +172,10 @@ public class VotedPostsFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPostViewModel.getLikedPosts(mUserId);
+    }
 }
