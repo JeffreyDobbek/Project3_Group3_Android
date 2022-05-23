@@ -60,7 +60,7 @@ public class LiveFeedActivity extends AppCompatActivity {
         mAdapter = new PostResultsAdapter(this);
 
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getApplication());
 
         mPostViewModel = new ViewModelProvider(this).get(PostViewModel.class);
         mPostViewModel.init();

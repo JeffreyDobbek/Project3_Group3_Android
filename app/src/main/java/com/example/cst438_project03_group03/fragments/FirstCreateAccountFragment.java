@@ -76,7 +76,7 @@ public class FirstCreateAccountFragment extends Fragment {
         setOnClickListeners();
 
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mViewModel.init();
+        mViewModel.init(getActivity().getApplication());
         mViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
             @Override
             public void onChanged(List<UserInfo> users) {

@@ -40,7 +40,7 @@
                 android:paddingEnd="100dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/choice_logo"/>
-z
+
 
             <ImageView
                 android:id="@+id/live_feed_new_post_iv"
@@ -73,17 +73,17 @@ z
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/live_posts_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/live_posts_refresh"
-        app:layout_constraintTop_toBottomOf="@id/live_feed_app_bar"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/live_feed_app_bar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/live_feed_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

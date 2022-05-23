@@ -3,38 +3,18 @@ package com.example.cst438_project03_group03.database;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-@Entity(tableName = AppDatabase.POST_TABLE)
+@Entity(tableName = RoomDatabase.POST_TABLE)
 public class Post {
 
-    @SerializedName("postId")
-    @Expose
     @PrimaryKey
     private int postId;
 
-    @SerializedName("userId")
-    @Expose
     private int userId;
 
-    @SerializedName("caption")
-    @Expose
     private String caption;
 
-    @SerializedName("numLikes")
-    @Expose
     private int numLikes;
-
-    @SerializedName("numComments")
-    @Expose
     private int numComments;
-
-    @Expose(serialize = false)
-    private int recentPosts;
-
-    public Post() {
-    }
 
     public Post(int postId, int userId, String caption, int numLikes, int numComments) {
         this.postId = postId;
@@ -82,13 +62,5 @@ public class Post {
 
     public void setNumComments(int numComments) {
         this.numComments = numComments;
-    }
-
-    public int getRecentPosts() {
-        return recentPosts;
-    }
-
-    public void setRecentPosts(int recentPosts) {
-        this.recentPosts = recentPosts;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.cst438_project03_group03.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -11,20 +12,14 @@ import java.util.List;
 @Dao
 public interface UserDao {
     @Insert
-    void insert(User... users);
+    void insert(User user);
 
     @Update
-    void update(User... users);
+    void update(User user);
 
     @Delete
-    void delete(User... users);
+    void delete(User user);
 
-    @Query("SELECT * FROM " + AppDatabase.USER_TABLE + " WHERE userId = :userId")
+    @Query("SELECT * FROM " + RoomDatabase.USER_TABLE + " WHERE userId = :userId")
     User getUserById(int userId);
-
-    @Query("SELECT * FROM " + AppDatabase.USER_TABLE + " WHERE email = :email")
-    User getUserByEmail(String email);
-
-    @Query("SELECT * FROM " + AppDatabase.USER_TABLE + " ORDER BY name DESC")
-    List<User> getAllUsers();
 }

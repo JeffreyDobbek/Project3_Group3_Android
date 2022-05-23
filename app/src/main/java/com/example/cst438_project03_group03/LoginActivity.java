@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void setUserViewModel() {
         mViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mViewModel.init();
+        mViewModel.init(getApplication());
 
         /**
          * Waits for response from getting a user from the database.

@@ -124,7 +124,7 @@ public class SecondForgotPasswordFragment extends Fragment {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getActivity().getApplication());
 
         mUserViewModel.getUserLiveData().observe(getViewLifecycleOwner(), new Observer<UserInfo>() {
             @Override

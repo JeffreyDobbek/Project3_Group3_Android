@@ -3,46 +3,21 @@ package com.example.cst438_project03_group03.database;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Class: User.java
  * Description: Model and entity for a User object.
  */
-@Entity(tableName = AppDatabase.USER_TABLE)
+@Entity(tableName = RoomDatabase.USER_TABLE)
 public class User {
 
-    @SerializedName("userId")
-    @Expose
     @PrimaryKey
     private int userId;
 
-    @SerializedName("username")
-    @Expose
     private String username;
-
-    @SerializedName("email")
-    @Expose
     private String email;
-
-    @SerializedName("name")
-    @Expose
     private String name;
-
-    @SerializedName("password")
-    @Expose
     private String password;
-
-    @SerializedName("image")
-    @Expose
     private String image;
-
-    @Expose(serialize = false)
-    private int cachedOrder;
-
-    public User() {
-    }
 
     /**
      * Parameterized constructor to initialize a User object.
@@ -57,22 +32,6 @@ public class User {
         this.userId = userId;
         this.email = email;
         this.username = username;
-        this.name = name;
-        this.password = password;
-        this.image = image;
-    }
-
-    /**
-     * Parameterized constructor to initialize a User object (without a user id).
-     * @param username The user's unique username.
-     * @param email The user's unique email.
-     * @param name The user's real name.
-     * @param password The user's password.
-     * @param image The user's profile picture (an Imgur link).
-     */
-    public User(String username, String email, String name, String password, String image) {
-        this.username = username;
-        this.email = email;
         this.name = name;
         this.password = password;
         this.image = image;
@@ -124,13 +83,5 @@ public class User {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public int getCachedOrder() {
-        return cachedOrder;
-    }
-
-    public void setCachedOrder(int cachedOrder) {
-        this.cachedOrder = cachedOrder;
     }
 }

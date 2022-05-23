@@ -130,7 +130,7 @@ public class VotedPostsFragment extends Fragment {
      */
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getActivity().getApplication());
 
         // Listens for request for all users in the database.
         mUserViewModel.getUserListLiveData().observe(getViewLifecycleOwner(), new Observer<List<UserInfo>>() {
@@ -171,5 +171,11 @@ public class VotedPostsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPostViewModel.getLikedPosts(mUserId);
     }
 }

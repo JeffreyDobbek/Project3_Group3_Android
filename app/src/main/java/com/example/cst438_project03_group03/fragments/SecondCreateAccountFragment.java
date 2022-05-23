@@ -168,7 +168,7 @@ public class SecondCreateAccountFragment extends Fragment {
 
     private void setUserViewModel() {
         mUserViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        mUserViewModel.init();
+        mUserViewModel.init(getActivity().getApplication());
 
         /**
          * Get request for all users from the database.

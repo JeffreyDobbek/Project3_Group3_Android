@@ -7,8 +7,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.cst438_project03_group03.api.ApiService;
-import com.example.cst438_project03_group03.database.Comment;
-import com.example.cst438_project03_group03.database.User;
 import com.example.cst438_project03_group03.models.CommentInfo;
 import com.example.cst438_project03_group03.models.UploadCommentResponse;
 import com.example.cst438_project03_group03.util.Constants;
@@ -22,7 +20,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Body;
 
 /**
  * Class: CommentRepository.java
